@@ -8,7 +8,15 @@ $mapping = @(
     @{
         destination = "$env:USERPROFILE\jmelosegui-omp.json"
         source = "$PWD\oh-my-posh\jmelosegui-omp.json"
-    }    
+    },
+    @{
+        destination = "$env:USERPROFILE\AppData\Roaming\Code\User\settings.json"
+        source = "$PWD\vscode\settings.json"
+    },
+    @{
+        destination = "$env:USERPROFILE\AppData\Roaming\Code\User\keybindings.json"
+        source = "$PWD\vscode\keybindings.json"
+    }
 )
 
 foreach ($map in $mapping) {

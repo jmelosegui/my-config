@@ -1,0 +1,90 @@
+{
+    "editor.fontFamily": "'CaskaydiaCove Nerd Font', Consolas, 'Courier New', monospace",
+    "editor.fontLigatures": true,
+    "workbench.colorTheme": "Visual Studio Dark",
+    "liveServer.settings.donotShowInfoMsg": true,
+    "workbench.iconTheme": "vscode-icons",
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter-notebook"
+    },
+    "notebook.cellToolbarLocation": {
+        "default": "right",
+        "jupyter-notebook": "left"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features",
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2
+    },
+    "rest-client.environmentVariables": {
+        
+            "$shared": {
+            "ProxyAuthorization": "NGCAPI_PROXYAUTHORIZATION",
+            "apiKey": "NGCAPI_APIKEY",
+            "apikeysecret": "NGCAPI_APIKEYSECRET",
+            "username": "NGCAPI_USERNAME",
+            "password": "NGCAPI_PASSWORD",
+            "proxyAuthorizationUser": "NGCAPI_PROXYAUTHORIZATIONUSER",
+            "proxyAuthorizationPassword": "NGCAPI_PROXYAUTHORIZATIONPASSWORD",
+            "requested_for_email": "NGCAPI_EMAIL",
+            "helm_repo_username": "NGCAPI_EMAIL",
+            "helm_repo_password": "ARTIFACTORY_APIKEY",
+            "helm_repo_url": "ARTIFACTORY_HELMURL"
+        }
+        
+    },
+    "powershell.powerShellDefaultVersion": "PowerShell (x64)",
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "files.exclude": {
+        "**/.git": false
+    },
+    "diffEditor.ignoreTrimWhitespace": false,
+    "redhat.telemetry.enabled": true,
+    "arduino.path": "E:\\dev\\arduino\\arduino-1.8.19",
+    "editor.inlineSuggest.enabled": true,
+    "github.copilot.enable": {
+        "*": true,
+        "yaml": true,
+        "plaintext": true,
+        "markdown": false
+    },
+    "window.zoomLevel": 1,
+    "files.associations": {
+        "*.cps": "javascript",
+        "*.js": "javascriptreact"
+    },
+    "liveServer.settings.port": 5974,
+    "files.autoSave": "afterDelay",
+    "[xml]": {
+        "editor.defaultFormatter": "DotJoshJohnson.xml"
+    },
+    "editor.renderWhitespace": "all",
+    "rest-client.rememberCookiesForSubsequentRequests": false,
+    "editor.accessibilitySupport": "off",
+    "powershell.integratedConsole.suppressStartupBanner": true,
+    "[python]": {
+        "editor.formatOnType": true
+    },
+    "json.schemas": [
+
+    ],
+    "remote.SSH.remotePlatform": {
+        "192.168.1.210": "linux",
+        "192.168.1.213": "linux"
+    },
+    "vs-kubernetes": {
+        "vs-kubernetes.kubeconfig": {
+            "nodeType": "context",
+            "nodeCategory": "kubernetes-explorer-node",
+            "contextName": "caas-dev-us",
+            "kubectlContext": {
+                "clusterName": "caas-dev-us",
+                "contextName": "caas-dev-us",
+                "userName": "caas-dev-us",
+                "active": true
+            }
+        },
+        "vscode-kubernetes.helm-path.windows": "C:\\Users\\jmelo\\.vs-kubernetes\\tools\\helm\\windows-amd64\\helm.exe",
+        "vscode-kubernetes.minikube-path.windows": "C:\\Users\\jmelo\\.vs-kubernetes\\tools\\minikube\\windows-amd64\\minikube.exe"
+    }
+}
