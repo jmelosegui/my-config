@@ -4,9 +4,9 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = 'Move highlighted line up'
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = 'Move highlighted line down', silent = true })
 
 
-vim.keymap.set("n", "J", "mzJ`z")
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
+vim.keymap.set("n", "J", "mzJ`z", { desc = 'Join line below to the current one', silent = true })
+vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Scroll Down, keeping the cursor in the middle of the buffer" })
+vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Scroll Up, keeping the cursor in the middle of the buffer" })
 
 -- Split navigation and management
 vim.keymap.set('n', '<leader>bb', ':bprev<CR>', { desc = 'Goto Previous Buffer', silent = true })
@@ -25,4 +25,5 @@ vim.keymap.set({ 'n', 't' }, '<C-Up>', ':resize -1<CR>', { silent = true })
 vim.keymap.set({ 'n', 't' }, '<C-Down>', ':resize +1<CR>', { silent = true })
 vim.keymap.set({ 'n' }, '<S-l>', '10zl', { desc = "Scroll To The Right", silent = true })
 vim.keymap.set({ 'n' }, '<S-h>', '10zh', { desc = "Scroll To The Left", silent = true })
+
 
