@@ -95,7 +95,7 @@ function func_ConvertFrom-Base64 {
 
 Set-Alias -Name ConvertFrom-Base64 -Value func_ConvertFrom-Base64
 
-$env:Path += ";U:\postgresql-15.4-1-windows-x64-binaries\pgsql\bin;U:\helm;P:\Personales\git-console\GitConsole\bin\Release\net7.0\win-x64;U:\mongo;P:\DevOps\DbDeploy\DbDeploy.Console\bin\Debug\net48;U:\hashicorp\vault;U:\terraform;U:\nuget;U:\nvm;U:\node;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\Azure Storage Emulator;U:\azcopy;"
+$env:Path += ";U:\jq;U:\postgresql-15.4-1-windows-x64-binaries\pgsql\bin;U:\helm;P:\Personales\git-console\GitConsole\bin\Release\net7.0\win-x64;U:\mongo;P:\DevOps\DbDeploy\DbDeploy.Console\bin\Debug\net48;U:\hashicorp\vault;U:\terraform;U:\nuget;U:\nvm;U:\node;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\Azure Storage Emulator;U:\azcopy;"
 
 function Get-ProgramFiles32() {
     if ($null -ne ${env:ProgramFiles(x86)}) {

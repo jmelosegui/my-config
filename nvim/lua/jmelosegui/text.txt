@@ -1,0 +1,15 @@
+--[[
+return {
+	{ "mbbill/undotree", lazy = false },
+
+
+	--lsp support
+	{ "VonHeikemen/lsp-zero.nvim", lazy = true, branch = "v3.x" },
+    
+	--autocompletion
+	{ "hrsh7th/cmp-nvim-lsp" },
+
+	--snippets
+	{ "L3MON4D3/LuaSnip" },
+}
+]]--
