@@ -28,9 +28,6 @@ return {
             update_focused_file = {
                 enable = true
             },
-            filters = {
-                dotfiles = false,
-            },
             view = {
                 number = true,
                 relativenumber = true,
@@ -47,6 +44,15 @@ return {
             git = {
                 enable = true,
                 timeout = 700,
+            },
+            filters = {
+                git_ignored = false,
+                dotfiles = false,
+                git_clean = false,
+                no_buffer = false,
+                no_bookmark = false,
+                custom = {},
+                exclude = {},
             },
             actions = {
                 open_file = {

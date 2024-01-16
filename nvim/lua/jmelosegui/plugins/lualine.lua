@@ -1,10 +1,9 @@
 return {
-    "nvim-lualine/lualine.nvim", 
+    "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    lazy = true, 
+    lazy = true,
 
     config = function()
-
         local lualine = require('lualine')
 
         local function get_lsp_name()
@@ -43,7 +42,7 @@ return {
             return language_servers
         end
 
-        lualine.setup ({
+        lualine.setup({
             options = {
                 -- component_separators = { left = '|', right = "|" },
                 theme = 'auto',
@@ -68,5 +67,6 @@ return {
                 -- }
             }
         })
-    end 
+    end
 }
+

@@ -37,6 +37,7 @@ return {
                 "powershell_es",
                 "tsserver",
                 "yamlls",
+                "yamlfix",
             },
             handlers = {
 

@@ -1,6 +1,6 @@
 return {
-    "stevearc/conform.nvim", 
-    lazy = true, 
+    "stevearc/conform.nvim",
+    lazy = true,
     event = { "BufReadPre", "BufNewFile" },
 
     config = function()
@@ -11,6 +11,7 @@ return {
                 javascript = { "prettier" },
                 json = { "prettier" },
                 lua = { "stylua" },
+                yaml = { "yamlfix" },
             },
         })
 
@@ -23,3 +24,4 @@ return {
         end)
     end
 }
+
