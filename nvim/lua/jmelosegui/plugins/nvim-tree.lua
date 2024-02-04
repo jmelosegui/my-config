@@ -3,19 +3,20 @@ return {
     dependencies = {
         "nvim-tree/nvim-web-devicons",
     },
-    config = function ()
+    config = function()
         local tree = require('nvim-tree')
 
         -- recommended setting from nvim-tree documentation
         vim.g.loaded_netrw = 1
         vim.g.loaded_netrwPlugin = 1
+        vim.g.nvim_tree_auto_open = 0
 
         -- Adjust highlighting for NvimTree file explorer to transparent background
         --[[        vim.api.nvim_exec([[
         autocmd FileType NvimTree hi Normal guibg=NONE ctermbg=NONE
         , false)
         --]]
-        tree.setup ({
+        tree.setup({
             disable_netrw = true,
             hijack_netrw = true,
             renderer = {
@@ -64,6 +65,6 @@ return {
         vim.keymap.set("n", "<leader>e", vim.cmd.NvimTreeToggle)
         vim.keymap.set('n', "<leader>tc", vim.cmd.NvimTreeCollapse)
         vim.keymap.set('n', "<leader>tf", vim.cmd.NvimTreeFindFile)
-
     end
 }
+

@@ -29,4 +29,3 @@ vim.opt.cursorline = true         -- Enable highlighting of the current line
 
 vim.g.mapleader = " "
 
-

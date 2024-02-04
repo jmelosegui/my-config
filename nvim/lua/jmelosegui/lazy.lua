@@ -12,6 +12,12 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup("jmelosegui.plugins", {
+    -- Check for plugins update but do not notify
+    checker = {
+        enable = true,
+        notify = false
+    },
+    -- Do not notify for updates in the plugins configuration
     change_detection = {
         notify = true
     }

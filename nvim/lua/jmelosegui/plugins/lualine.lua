@@ -1,10 +1,10 @@
 return {
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    lazy = true,
 
     config = function()
         local lualine = require('lualine')
+        local lazy_status = require("lazy.status")
 
         local function get_lsp_name()
             local msg = "LS Inactive"
@@ -44,15 +44,21 @@ return {
 
         lualine.setup({
             options = {
-                -- component_separators = { left = '|', right = "|" },
+                --component_separators = { left = '|', right = "|" },
                 theme = 'auto',
                 icon_enabled = true,
             },
             sections = {
                 lualine_x = {
+                    {
+                        lazy_status.updates,
+                        cond = lazy_status.has_updates,
+                        color = { fg = "#ff9e64" },
+                    },
                     { get_lsp_name },
-                    'selectioncount',
-                    'filetype'
+                    { "encoding" },
+                    { "selectioncount" },
+                    { "filetype" }
                 },
                 -- lualine_c = {
                 -- 	'filetype'
