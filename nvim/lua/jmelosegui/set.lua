@@ -24,8 +24,10 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 vim.opt.colorcolumn = "120"
 
-vim.opt.confirm = true            -- Confirm to save changes before exiting modified buffer
-vim.opt.cursorline = true         -- Enable highlighting of the current line
+vim.opt.confirm = true    -- Confirm to save changes before exiting modified buffer
+vim.opt.cursorline = true -- Enable highlighting of the current line
 
 vim.g.mapleader = " "
+
+vim.opt.clipboard:append { 'unnamed', 'unnamedplus' }
 

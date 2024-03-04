@@ -17,6 +17,7 @@
         "editor.tabSize": 2
     },
     "rest-client.environmentVariables": {
+    
         
             "$shared": {
             "ProxyAuthorization": "NGCAPI_PROXYAUTHORIZATION",
@@ -86,5 +87,8 @@
         },
         "vscode-kubernetes.helm-path.windows": "C:\\Users\\jmelo\\.vs-kubernetes\\tools\\helm\\windows-amd64\\helm.exe",
         "vscode-kubernetes.minikube-path.windows": "C:\\Users\\jmelo\\.vs-kubernetes\\tools\\minikube\\windows-amd64\\minikube.exe"
+    },
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "never"
     }
 }

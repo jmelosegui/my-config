@@ -30,14 +30,15 @@ return {
                 "docker_compose_language_service",
                 "eslint",
                 "gopls",
+                "helm_ls",
                 "html",
                 "jsonls",
                 "lua_ls",
                 "omnisharp",
                 "powershell_es",
+                "rust-analyzer",
+                "terraformls",
                 "tsserver",
-                "yamlls",
-                "yamlfix",
             },
             handlers = {
 
