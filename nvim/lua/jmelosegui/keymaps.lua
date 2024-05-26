@@ -27,3 +27,6 @@ vim.keymap.set({ "n" }, "<S-h>", "10zh", { desc = "Scroll To The Left", silent =
 -- Play macros
 vim.keymap.set("n", "Q", "@qj")
 vim.keymap.set("x", "Q", ":norm @q<CR>")
+
+-- Remove lines with only empty spaces
+vim.keymap.set("n", "<leader>ev", ":%s/^\\s*$//gn | %s/^\\s*$//g", { desc = "Remove trailing whitespaces" })

@@ -48,6 +48,7 @@ return {
                     local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
                     local opts = { noremap = true, silent = true }
+
                     local on_attach = function(client, bufnr)
                         opts.buffer = bufnr
 
@@ -71,6 +72,9 @@ return {
 
                         opts.desc = "Go to next diagnostic"
                         vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, opts)
+
+                        opts.desc = "Hover documentation"
+                        vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
                     end
 
                     local settings = {

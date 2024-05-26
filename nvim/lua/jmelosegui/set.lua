@@ -31,3 +31,10 @@ vim.g.mapleader = " "
 
 vim.opt.clipboard:append { 'unnamed', 'unnamedplus' }
 
+-- Enable list mode to display whitespace characters
+vim.opt.list = true
+
+-- Define how whitespace characters are displayed
+vim.opt.listchars:append({ tab = "▸\\ ", trail = "·", extends = "»", precedes = "«", nbsp = "•" })
+
+vim.cmd("highlight SpecialKey ctermfg=red guifg=red")
