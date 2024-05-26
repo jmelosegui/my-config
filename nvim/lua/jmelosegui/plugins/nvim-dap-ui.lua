@@ -7,6 +7,8 @@ return {
         local dap = require("dap")
         local dapui = require("dapui")
 
+        dap.set_log_level('TRACE')
+
         dapui.setup({
             icons = { expanded = "▾", collapsed = "▸", current_frame = "▸" },
             mapping = {
@@ -105,7 +107,7 @@ return {
         vim.keymap.set("n", "<F10>", function() vim.cmd("lua require'dap'.step_over()") end, { silent = true })
         vim.keymap.set("n", "<F11>", function() vim.cmd("lua require'dap'.step_into()") end, { silent = true })
         vim.keymap.set("n", "<F12>", function() vim.cmd("lua require'dap'.step_out()") end, { silent = true })
-        vim.keymap.set("n", "<Leader>b", function() vim.cmd("lua require'dap'.toggle_breakpoint()") end,
+        vim.keymap.set("n", "<F9>", function() vim.cmd("lua require'dap'.toggle_breakpoint()") end,
             { silent = true })
         vim.keymap.set("n", "<Leader>B",
             function() vim.cmd("lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))") end,
