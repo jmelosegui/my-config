@@ -1,28 +1,50 @@
 Import-Module -Name Terminal-Icons
 oh-my-posh init pwsh --config "$env:USERPROFILE\jmelosegui-omp.json" | Invoke-Expression
 
-Function func_gitprune { 
+Function func_query_vg_ado
+{
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$project,
+        [Parameter(Mandatory=$true)]
+        [string]$variableName
+    )
+    $jqCommand = '.[] | { name, variables: (.variables | to_entries[] | select(.key | test("' + $variableName + '"; "i")) | { key: .key, value: .value }) }'
+    az pipelines variable-group list -o json --project $project | jq $jqCommand 
+}
+Set-Alias -Name adoq -Value func_query_vg_ado
+
+Function func_gitprune
+{ 
     git fetch -p
     git branch --v | Where-Object { $_ -match "\[gone\]" } | ForEach-Object { -split $_ | Select-Object -First 1 } | ForEach-Object { git branch -D $_ } 
 }
-
 Set-Alias -Name gitprune -Value func_gitprune
 
-Function func_getip { Invoke-WebRequest -uri 'https://api.ipify.org?format=json' | ConvertFrom-Json | Select-Object -expandproperty ip | ForEach-Object { Write-Host $_; Set-Clipboard $_} }
+Function func_getip
+{ 
+    Invoke-WebRequest -uri 'https://api.ipify.org?format=json' | ConvertFrom-Json | Select-Object -expandproperty ip | ForEach-Object { Write-Host $_; Set-Clipboard $_} 
+}
 Set-Alias -Name ip -Value func_getip
 
 Set-Alias -Name k kubectl
 Set-Alias -Name d docker
-
 Set-Alias which where.exe
 
-Function func_tfplan { terraform plan -no-color > .\.logs\plan.txt }
+Function func_tfplan
+{ 
+    terraform plan -no-color > .\.logs\plan.txt 
+}
 Set-Alias -Name tfplan -Value func_tfplan
 
-Function func_tfapply { terraform apply -auto-approve -no-color > .\.logs\apply.txt }
+Function func_tfapply
+{ 
+    terraform apply -auto-approve -no-color > .\.logs\apply.txt 
+}
 Set-Alias -Name tfapply -Value func_tfapply
 
-function func_get_hash{
+function func_get_hash
+{
     param(
         [Parameter(Mandatory=$true, ValueFromPipeline = $true)]
         [string]$Value,
@@ -47,17 +69,18 @@ function func_get_hash{
     
     return $result
 }
-
 Set-Alias -Name Get-Hash -Value func_get_hash
 
-function func_deflate{
+function func_deflate
+{
     param(
         [Parameter(Mandatory=$true, ValueFromPipeline = $true)]
         [ValidateScript({            
-             if( -Not (Test-Path $_ -PathType leaf) ){
-                throw "File does not exist"
-            }
-            return $true
+                if( -Not (Test-Path $_ -PathType leaf) )
+                {
+                    throw "File does not exist"
+                }
+                return $true
             })]
         [string]$Path
     )
@@ -68,10 +91,10 @@ function func_deflate{
     $sr = New-Object IO.StreamReader($cs)
     return $sr.ReadToEnd()
 }
-
 Set-Alias -Name deflate -Value func_deflate
 
-function func_ConvertTo-Base64 {
+function func_ConvertTo-Base64
+{
     param(
         [Parameter(Mandatory=$true , ValueFromPipeline = $true)]
         [string]$value
@@ -80,10 +103,10 @@ function func_ConvertTo-Base64 {
     $base64content = [System.Convert]::ToBase64String($bytes)
     return $base64content
 }
-
 Set-Alias -Name ConvertTo-Base64 -Value func_ConvertTo-Base64
 
-function func_ConvertFrom-Base64 {
+function func_ConvertFrom-Base64
+{
     param(
         [Parameter(Mandatory=$true , ValueFromPipeline = $true)]
         [string]$base64Value
@@ -92,22 +115,42 @@ function func_ConvertFrom-Base64 {
     $result = [System.Text.Encoding]::UTF8.GetString($bytes)
     return $result
 }
-
 Set-Alias -Name ConvertFrom-Base64 -Value func_ConvertFrom-Base64
 
-$env:Path += ";U:\netcoredbg-win64\;U:\jq;U:\postgresql-15.4-1-windows-x64-binaries\pgsql\bin;U:\helm;P:\Personales\git-console\GitConsole\bin\Release\net7.0\win-x64;U:\mongo;P:\DevOps\DbDeploy\DbDeploy.Console\bin\Debug\net48;U:\hashicorp\vault;U:\terraform;U:\nuget;U:\nvm;U:\node;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\Azure Storage Emulator;U:\azcopy;"
+$path = @(
+    "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\Azure Storage Emulator",
+    "P:\DevOps\DbDeploy\DbDeploy.Console\bin\Debug\net48",
+    "P:\Personales\git-console\GitConsole\bin\Release\net7.0\win-x64",
+    "U:\azcopy",
+    "U:\hashicorp\vault",
+    "U:\helm",
+    "U:\jq",
+    "U:\mongo",
+    "U:\netcoredbg-win64\",
+    "U:\node",
+    "U:\nuget",
+    "U:\nvm",
+    "U:\postgresql-15.4-1-windows-x64-binaries\pgsql\bin",
+    "U:\terraform"
+)
 
-function Get-ProgramFiles32() {
-    if ($null -ne ${env:ProgramFiles(x86)}) {
+$env:Path += ';' + $($path -join ';')
+
+function Get-ProgramFiles32()
+{
+    if ($null -ne ${env:ProgramFiles(x86)})
+    {
         return ${env:ProgramFiles(x86)}
     }
     return $env:ProgramFiles
 }
 
-function Get-VsInstallLocation() {
+function Get-VsInstallLocation()
+{
     $programFiles = Get-ProgramFiles32
     $vswhere = "$programFiles\Microsoft Visual Studio\Installer\vswhere.exe"
-    if (Test-Path $vswhere) {
+    if (Test-Path $vswhere)
+    {
         $vsinstallpath = (. "$vswhere" -latest -property installationPath -format value -nologo | Out-String).Trim()
         return $vsinstallpath
     }
@@ -121,7 +164,8 @@ if ($host.Name -eq 'ConsoleHost')
 
 # Visual Studio Developer PowerShell
 $vsInstallPath = Get-VsInstallLocation
-if ($null -ne $vsInstallPath) {
+if ($null -ne $vsInstallPath)
+{
     Import-Module "$vsInstallPath\Common7\Tools\Microsoft.VisualStudio.DevShell.dll"
     Enter-VsDevShell -SkipAutomaticLocation -InstallPath $vsinstallpath | Out-Null
 }
@@ -133,18 +177,20 @@ $PSReadLineOptions = @{
     HistoryNoDuplicates = $true
 }
 
-try {
+try
+{
     Set-PSReadLineOption @PSReadLineOptions    
-}
-catch {
-    
+} 
+catch
+{
+    # Ignore errors
 }
 
 # PowerShell parameter completion shim for the dotnet CLI
 Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock {
     param($commandName, $wordToComplete, $cursorPosition)
     dotnet complete --position $cursorPosition "$wordToComplete" | ForEach-Object {
-    [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
+        [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
     }
 }
 
@@ -160,9 +206,9 @@ Set-PSReadLineKeyHandler -Key 'Ctrl+Shift+b' `
 }
 
 Set-PSReadLineKeyHandler -Key Backspace `
-                         -BriefDescription SmartBackspace `
-                         -LongDescription "Delete previous character or matching quotes/parens/braces" `
-                         -ScriptBlock {
+    -BriefDescription SmartBackspace `
+    -LongDescription "Delete previous character or matching quotes/parens/braces" `
+    -ScriptBlock {
     param($key, $arg)
 
     $line = $null
@@ -187,8 +233,7 @@ Set-PSReadLineKeyHandler -Key Backspace `
         if ($toMatch -ne $null -and $line[$cursor-1] -eq $toMatch)
         {
             [Microsoft.PowerShell.PSConsoleReadLine]::Delete($cursor - 1, 2)
-        }
-        else
+        } else
         {
             [Microsoft.PowerShell.PSConsoleReadLine]::BackwardDeleteChar($key, $arg)
         }
@@ -199,9 +244,9 @@ Set-PSReadLineKeyHandler -Key Backspace `
 # but you need parens to do that.  This binding will help by putting parens around the current selection,
 # or if nothing is selected, the whole line.
 Set-PSReadLineKeyHandler -Key 'Alt+(' `
-                         -BriefDescription ParenthesizeSelection `
-                         -LongDescription "Put parenthesis around the selection or entire line and move the cursor to after the closing parenthesis" `
-                         -ScriptBlock {
+    -BriefDescription ParenthesizeSelection `
+    -LongDescription "Put parenthesis around the selection or entire line and move the cursor to after the closing parenthesis" `
+    -ScriptBlock {
     param($key, $arg)
 
     $selectionStart = $null
@@ -215,8 +260,7 @@ Set-PSReadLineKeyHandler -Key 'Alt+(' `
     {
         [Microsoft.PowerShell.PSConsoleReadLine]::Replace($selectionStart, $selectionLength, '(' + $line.SubString($selectionStart, $selectionLength) + ')')
         [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($selectionStart + $selectionLength + 2)
-    }
-    else
+    } else
     {
         [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, '(' + $line + ')')
         [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()
@@ -239,8 +283,7 @@ if (Get-Command "dotnet-suggest" -errorAction SilentlyContinue)
             [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
         }
     }    
-}
-else
+} else
 {
     "Unable to provide System.CommandLine tab completion support unless the [dotnet-suggest] tool is first installed."
     "See the following for tool installation: https://www.nuget.org/packages/dotnet-suggest"
@@ -249,9 +292,7 @@ else
 $env:DOTNET_SUGGEST_SCRIPT_VERSION = "1.0.2"
 # dotnet suggest script end
 
-
 # kubernetes Autocompleter
-
 
 # Copyright 2016 The Kubernetes Authors.
 #
@@ -268,22 +309,25 @@ $env:DOTNET_SUGGEST_SCRIPT_VERSION = "1.0.2"
 # limitations under the License.
 # powershell completion for kubectl                              -*- shell-script -*-
 
-function __k_debug {
-    if ($env:BASH_COMP_DEBUG_FILE) {
+function __k_debug
+{
+    if ($env:BASH_COMP_DEBUG_FILE)
+    {
         "$args" | Out-File -Append -FilePath "$env:BASH_COMP_DEBUG_FILE"
     }
 }
 
-filter __k_escapeStringWithSpecialChars {
+filter __k_escapeStringWithSpecialChars
+{
     $_ -replace '\s|#|@|\$|;|,|''|\{|\}|\(|\)|"|`|\||<|>|&','`$&'
 }
 
 Register-ArgumentCompleter -CommandName 'k' -ScriptBlock {
     param(
-            $WordToComplete,
-            $CommandAst,
-            $CursorPosition
-        )
+        $WordToComplete,
+        $CommandAst,
+        $CursorPosition
+    )
 
     # Get the current command line and convert into a string
     $Command = $CommandAst.CommandElements
@@ -298,7 +342,8 @@ Register-ArgumentCompleter -CommandName 'k' -ScriptBlock {
     # to truncate the command-line ($Command) up to the $CursorPosition location.
     # Make sure the $Command is longer then the $CursorPosition before we truncate.
     # This happens because the $Command does not include the last space.
-    if ($Command.Length -gt $CursorPosition) {
+    if ($Command.Length -gt $CursorPosition)
+    {
         $Command=$Command.Substring(0,$CursorPosition)
     }
     __k_debug "Truncated command: $Command"
@@ -318,7 +363,8 @@ Register-ArgumentCompleter -CommandName 'k' -ScriptBlock {
     # we cannot use $WordToComplete because it
     # has the wrong values if the cursor was moved
     # so use the last argument
-    if ($WordToComplete -ne "" ) {
+    if ($WordToComplete -ne "" )
+    {
         $WordToComplete = $Arguments.Split(" ")[-1]
     }
     __k_debug "New WordToComplete: $WordToComplete"
@@ -326,13 +372,15 @@ Register-ArgumentCompleter -CommandName 'k' -ScriptBlock {
 
     # Check for flag with equal sign
     $IsEqualFlag = ($WordToComplete -Like "--*=*" )
-    if ( $IsEqualFlag ) {
+    if ( $IsEqualFlag )
+    {
         __k_debug "Completing equal sign flag"
         # Remove the flag part
         $Flag,$WordToComplete = $WordToComplete.Split("=",2)
     }
 
-    if ( $WordToComplete -eq "" -And ( -Not $IsEqualFlag )) {
+    if ( $WordToComplete -eq "" -And ( -Not $IsEqualFlag ))
+    {
         # If the last parameter is complete (there is a space following it)
         # We add an extra empty parameter so we can indicate this to the go method.
         __k_debug "Adding extra empty parameter"
@@ -348,7 +396,8 @@ Register-ArgumentCompleter -CommandName 'k' -ScriptBlock {
 
     # get directive from last line
     [int]$Directive = $Out[-1].TrimStart(':')
-    if ($Directive -eq "") {
+    if ($Directive -eq "")
+    {
         # There is no directive specified
         $Directive = 0
     }
@@ -358,7 +407,8 @@ Register-ArgumentCompleter -CommandName 'k' -ScriptBlock {
     $Out = $Out | Where-Object { $_ -ne $Out[-1] }
     __k_debug "The completions are: $Out"
 
-    if (($Directive -band $ShellCompDirectiveError) -ne 0 ) {
+    if (($Directive -band $ShellCompDirectiveError) -ne 0 )
+    {
         # Error code.  No completion.
         __k_debug "Received error from custom completion go code"
         return
@@ -371,13 +421,15 @@ Register-ArgumentCompleter -CommandName 'k' -ScriptBlock {
         __k_debug "Name: $Name Description: $Description"
 
         # Look for the longest completion so that we can format things nicely
-        if ($Longest -lt $Name.Length) {
+        if ($Longest -lt $Name.Length)
+        {
             $Longest = $Name.Length
         }
 
         # Set the description to a one space string if there is none set.
         # This is needed because the CompletionResult does not accept an empty string as argument
-        if (-Not $Description) {
+        if (-Not $Description)
+        {
             $Description = " "
         }
         @{Name="$Name";Description="$Description"}
@@ -385,14 +437,16 @@ Register-ArgumentCompleter -CommandName 'k' -ScriptBlock {
 
 
     $Space = " "
-    if (($Directive -band $ShellCompDirectiveNoSpace) -ne 0 ) {
+    if (($Directive -band $ShellCompDirectiveNoSpace) -ne 0 )
+    {
         # remove the space here
         __k_debug "ShellCompDirectiveNoSpace is called"
         $Space = ""
     }
 
     if ((($Directive -band $ShellCompDirectiveFilterFileExt) -ne 0 ) -or
-       (($Directive -band $ShellCompDirectiveFilterDirs) -ne 0 ))  {
+       (($Directive -band $ShellCompDirectiveFilterDirs) -ne 0 ))
+    {
         __k_debug "ShellCompDirectiveFilterFileExt ShellCompDirectiveFilterDirs are not supported"
 
         # return here to prevent the completion of the extensions
@@ -404,16 +458,19 @@ Register-ArgumentCompleter -CommandName 'k' -ScriptBlock {
         $_.Name -like "$WordToComplete*"
 
         # Join the flag back if we have an equal sign flag
-        if ( $IsEqualFlag ) {
+        if ( $IsEqualFlag )
+        {
             __k_debug "Join the equal sign flag back to the completion value"
             $_.Name = $Flag + "=" + $_.Name
         }
     }
 
-    if (($Directive -band $ShellCompDirectiveNoFileComp) -ne 0 ) {
+    if (($Directive -band $ShellCompDirectiveNoFileComp) -ne 0 )
+    {
         __k_debug "ShellCompDirectiveNoFileComp is called"
 
-        if ($Values.Length -eq 0) {
+        if ($Values.Length -eq 0)
+        {
             # Just print an empty string here so the
             # shell does not start to complete paths.
             # We cannot use CompletionResult here because
@@ -444,36 +501,44 @@ Register-ArgumentCompleter -CommandName 'k' -ScriptBlock {
         # 3) ResultType     type of completion result
         # 4) ToolTip        text for the tooltip with details about the object
 
-        switch ($Mode) {
+        switch ($Mode)
+        {
 
             # bash like
-            "Complete" {
+            "Complete"
+            {
 
-                if ($Values.Length -eq 1) {
+                if ($Values.Length -eq 1)
+                {
                     __k_debug "Only one completion left"
 
                     # insert space after value
                     [System.Management.Automation.CompletionResult]::new($($comp.Name | __k_escapeStringWithSpecialChars) + $Space, "$($comp.Name)", 'ParameterValue', "$($comp.Description)")
 
-                } else {
+                } else
+                {
                     # Add the proper number of spaces to align the descriptions
-                    while($comp.Name.Length -lt $Longest) {
+                    while($comp.Name.Length -lt $Longest)
+                    {
                         $comp.Name = $comp.Name + " "
                     }
 
                     # Check for empty description and only add parentheses if needed
-                    if ($($comp.Description) -eq " " ) {
+                    if ($($comp.Description) -eq " " )
+                    {
                         $Description = ""
-                    } else {
+                    } else
+                    {
                         $Description = "  ($($comp.Description))"
                     }
 
                     [System.Management.Automation.CompletionResult]::new("$($comp.Name)$Description", "$($comp.Name)$Description", 'ParameterValue', "$($comp.Description)")
                 }
-             }
+            }
 
             # zsh like
-            "MenuComplete" {
+            "MenuComplete"
+            {
                 # insert space after value
                 # MenuComplete will automatically show the ToolTip of
                 # the highlighted value at the bottom of the suggestions.
@@ -481,7 +546,8 @@ Register-ArgumentCompleter -CommandName 'k' -ScriptBlock {
             }
 
             # TabCompleteNext and in case we get something unknown
-            Default {
+            Default
+            {
                 # Like MenuComplete but we don't want to add a space here because
                 # the user need to press space anyway to get the completion.
                 # Description will not be shown because that's not possible with TabCompleteNext
@@ -491,5 +557,4 @@ Register-ArgumentCompleter -CommandName 'k' -ScriptBlock {
 
     }
 }
-
 
