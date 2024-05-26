@@ -1,0 +1,7 @@
+properties:
+  root: U:\\
+  apps:
+  - name: jq
+    downloadUrl: https://github.com/jqlang/jq/releases/download/jq-$version/jq-win64.exe
+    fileName: jq.exe  
+    version: 1.7.1
