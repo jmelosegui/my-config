@@ -119,6 +119,7 @@ Set-Alias -Name ConvertFrom-Base64 -Value func_ConvertFrom-Base64
 
 $path = @(
     "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\Azure Storage Emulator",
+    "C:\Program Files\Neovim\bin\",
     "P:\DevOps\DbDeploy\DbDeploy.Console\bin\Debug\net48",
     "P:\Personales\git-console\GitConsole\bin\Release\net7.0\win-x64",
     "U:\azcopy",

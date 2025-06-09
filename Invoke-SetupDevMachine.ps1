@@ -12,7 +12,11 @@ function Invoke-SetupDevMachine
         # Check if winget is installed
         if (!(Get-Command winget -ErrorAction SilentlyContinue))
         {
-            Write-Error "Winget is not installed. Please install the App Installer from the Microsoft Store."
+            Write-Error "Winget is not installed." 
+            Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery
+            Write-Host "Using Repair-WinGetPackageManager cmdlet to bootstrap WinGet..."
+            Repair-WinGetPackageManager
+            Write-Host "Winget has been installed. Please run this script again to continue setup."
             return
         }
 
