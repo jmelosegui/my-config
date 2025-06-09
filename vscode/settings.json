@@ -89,6 +89,6 @@
         "vscode-kubernetes.minikube-path.windows": "C:\\Users\\jmelo\\.vs-kubernetes\\tools\\minikube\\windows-amd64\\minikube.exe"
     },
     "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": "never"
+        "source.fixAll.eslint": false
     }
 }

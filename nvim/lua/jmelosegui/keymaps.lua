@@ -30,3 +30,13 @@ vim.keymap.set("x", "Q", ":norm @q<CR>")
 
 -- Remove lines with only empty spaces
 vim.keymap.set("n", "<leader>ev", ":%s/^\\s*$//gn | %s/^\\s*$//g", { desc = "Remove trailing whitespaces" })
+
+-- Format current buffer
+vim.keymap.set(
+  'n',                   -- mode: normal
+  '<leader>f',           -- key combo
+  function()             -- what to run
+    vim.lsp.buf.format({ async = true })
+  end,
+  { noremap = true, silent = true, desc = "LSP: format buffer" }
+)

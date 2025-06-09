@@ -131,7 +131,9 @@ $path = @(
     "U:\nuget",
     "U:\nvm",
     "U:\postgresql-15.4-1-windows-x64-binaries\pgsql\bin",
-    "U:\terraform"
+    "U:\terraform",
+    "C:\Program Files\MuseScore 3\bin",
+    "U:\ffmpeg-5.0-essentials_build\bin"
 )
 
 $env:Path += ';' + $($path -join ';')

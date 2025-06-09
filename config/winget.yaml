@@ -13,15 +13,15 @@ properties:
       id: "Neovim.Neovim"
       source: winget
     id: Neovim.Neovim
-#  - resource: Microsoft.WinGet.DSC/WinGetPackage
-#    directives:
-#      description: Installing JetBrains.Rider
-#      allowPrerelease: true
-#      securityContext: current
-#    settings:
-#      id: "JetBrains.Rider"
-#      source: winget
-#    id: JetBrains.Rider
+  - resource: Microsoft.WinGet.DSC/WinGetPackage
+    directives:
+      description: Installing JetBrains.Rider
+      allowPrerelease: true
+      securityContext: current
+    settings:
+      id: "JetBrains.Rider"
+      source: winget
+    id: JetBrains.Rider
   - resource: Microsoft.WinGet.DSC/WinGetPackage
     directives:
       description: Installing Microsoft.VisualStudioCode
@@ -40,4 +40,13 @@ properties:
       id: "JanDeDobbeleer.OhMyPosh"
       source: winget
     id: JanDeDobbeleer.OhMyPosh
+  - resource: Microsoft.WinGet.DSC/WinGetPackage  
+    directives:
+      description: Installing Fastfetch-cli.Fastfetch
+      allowPrerelease: true
+      securityContext: current
+    settings:
+      id: "Fastfetch-cli.Fastfetch"
+      source: winget
+    id: Fastfetch-cli.Fastfetch
   configurationVersion: 0.2.0

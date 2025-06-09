@@ -13,3 +13,6 @@ symbolicLinks:
   source: "$PSScriptRoot\\powershell\\profile.ps1"
 - destination: "%USERPROFILE%\\Documents\\PowerShell\\Microsoft.PowerShell_profile.ps1"
   source: "$PSScriptRoot\\powershell\\profile.ps1"
+- destination: "%USERPROFILE%\\.config\\fastfetch\\config.jsonc"
+  source: "$PSScriptRoot\\fastfetch\\config.jsonc"
+

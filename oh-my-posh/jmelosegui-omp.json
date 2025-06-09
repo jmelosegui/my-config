@@ -5,23 +5,23 @@
       "alignment": "left",
       "segments": [
         {
-          "background": "#f1184c",
-          "foreground": "#242424",
+          "background": "#ED8796",
+          "foreground": "#24273A",
           "powerline_symbol": "\ue0c4",
           "style": "powerline",
           "template": "\uf0e7",
           "type": "root"
         },
         {
-          "background": "#282c34",
-          "foreground": "#3A86FF",
+          "background": "#24273A",
+          "foreground": "#8AADF4",
           "leading_diamond": " ",
           "style": "diamond",
           "template": "{{ if .WSL }}WSL at {{ end }}{{.Icon}} ",
           "type": "os"
         },
         {
-          "background": "#5C2D91",
+          "background": "#F5BDE6",
           "foreground": "#ffffff",
           "powerline_symbol": "\ue0c4",
           "properties": {
@@ -32,8 +32,8 @@
           "type": "envvar"
         },
         {
-          "background": "#242424",
-          "foreground": "#FFBB00",
+          "background": "#24273A",
+          "foreground": "#EED49F",
           "powerline_symbol": "\ue0c4",
           "properties": {
             "time_format": "15:04:05"
@@ -43,8 +43,8 @@
           "type": "time"
         },
         {
-          "background": "#242424",
-          "foreground": "#33DD2D",
+          "background": "#24273A",
+          "foreground": "#A6DA95",
           "powerline_symbol": "\ue0c4",
           "properties": {
             "folder_separator_icon": "/",
@@ -55,8 +55,8 @@
           "type": "path"
         },
         {
-          "background": "#242424",
-          "foreground": "#3A86FF",
+          "background": "#24273A",
+          "foreground": "#8AADF4",
           "powerline_symbol": "\ue0c4",
           "properties": {
             "fetch_stash_count": true,
@@ -68,7 +68,7 @@
           "type": "git"
         },
         {
-          "background": "#512BD4",
+          "background": "#F5BDE6",
           "foreground": "#ffffff",
           "powerline_symbol": "\ue0c4",
           "style": "powerline",
@@ -76,7 +76,7 @@
           "type": "dotnet"
         },
         {
-          "background": "#0184bc",
+          "background": "#8AADF4",
           "foreground": "#ffffff",
           "powerline_symbol": "\ue0c4",
           "properties": {
@@ -91,13 +91,13 @@
           "type": "kubectl",
           "style": "powerline",
           "powerline_symbol": "\ue0c4",
-          "background": "#282c34",
-          "foreground": "#0077c2", 
+          "background": "#24273A",
+          "foreground": "#8AADF4", 
           "template": " ﴱ {{.Context}}{{if .Namespace}} :: {{.Namespace}}{{end}} "
         },
         {
-          "background": "#ff6961",
-          "foreground": "#111111",
+          "background": "#ED8796",
+          "foreground": "#24273A",
           "invert_powerline": false,
           "powerline_symbol": "\ue0c4",
           "properties": {
@@ -109,11 +109,11 @@
           "type": "ytm"
         },
         {
-          "background": "#33DD2D",
+          "background": "#A6DA95",
           "background_templates": [
             "{{ if gt .Code 0 }}#f1184c{{ end }}"
           ],
-          "foreground": "#242424",
+          "foreground": "#24273A",
           "powerline_symbol": "\ue0c4",
           "style": "powerline",
           "template": " \ue23a{{ if gt .Code 0 }}\uf00d{{ else }}\uf42e{{ end }} ",
@@ -127,7 +127,7 @@
       "newline": true,
       "segments": [
         {
-          "foreground": "#f1184c",
+          "foreground": "#ED8796",
           "style": "plain",
           "template": "\u279c ",
           "type": "text"
@@ -146,7 +146,7 @@
       ],
       "style": "diamond",
       "foreground": "#ffffff",
-      "background": "#0077c2",      
+      "background": "#8AADF4",      
       "leading_diamond": "\ue0b6",
       "trailing_diamond": "\ue0b4",
       "template": " \ufd31 {{.Context}} :: {{if .Namespace}}{{.Namespace}}{{else}}default{{end}} ",
@@ -163,7 +163,7 @@
       ],
       "style": "diamond",
       "foreground": "#193549",
-      "background": "#fffb38",
+      "background": "#EED49F",
       "leading_diamond": "",
       "trailing_diamond": "",
       "template": "{{ .HEAD }}{{ if .Staging.Changed }}  {{ .Staging.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Working.Changed }}  {{ .Working.String }}{{ end }}",
