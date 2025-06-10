@@ -49,4 +49,13 @@ properties:
       id: "Fastfetch-cli.Fastfetch"
       source: winget
     id: Fastfetch-cli.Fastfetch
+  - resource: Microsoft.WinGet.DSC/WinGetPackage
+    directives:
+      description: Installing BurntSushi.ripgrep.MSVC
+      allowPrerelease: true
+      securityContext: current
+    settings:
+      id: "BurntSushi.ripgrep.MSVC"
+      source: winget
+    id: BurntSushi.ripgrep.MSVC
   configurationVersion: 0.2.0

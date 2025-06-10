@@ -29,7 +29,8 @@ Set-Alias -Name ip -Value func_getip
 
 Set-Alias -Name k kubectl
 Set-Alias -Name d docker
-Set-Alias which where.exe
+Set-Alias -Name which where.exe
+Set-Alias -Name grep rg
 
 Function func_tfplan
 { 
