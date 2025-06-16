@@ -48,7 +48,7 @@
         "backgroundImageStretchMode": "uniformToFill",
         "colorScheme": "Catppuccin Mocha",
         "font": {
-          "face": "CaskaydiaCove NF"
+          "face": "CaskaydiaCove Nerd Font"
         },
         "opacity": 95,
         "useAcrylic": true

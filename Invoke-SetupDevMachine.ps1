@@ -5,13 +5,19 @@
 .DESCRIPTION
     This script configures a Windows developer machine by:
     1. Installing applications via winget using a configuration file
-    2. Creating symbolic links for configuration files from the repository to their expected system locations
+    2. Installing Nerd Fonts for terminal and development use
+    3. Creating symbolic links for configuration files from the repository to their expected system locations
+    4. Setting up development drive mappings
     
-    The script uses winget to install applications and creates symbolic links based on a YAML configuration file.
+    The script uses winget to install applications, downloads and installs fonts from GitHub,
+    and creates symbolic links based on a YAML configuration file.
     Existing files are backed up before being replaced with symbolic links.
 
 .PARAMETER SkipWinget
-    Skips the winget configuration step. Only symbolic links will be created.
+    Skips the winget configuration step. Only fonts, symbolic links, and drive mappings will be created.
+
+.PARAMETER SkipFonts
+    Skips the Nerd Fonts installation step. Useful if fonts are already installed or not needed.
 
 .EXAMPLE
     .\Invoke-SetupDevMachine.ps1
@@ -21,7 +27,17 @@
 .EXAMPLE
     .\Invoke-SetupDevMachine.ps1 -SkipWinget
     
-    Skips winget installation and only creates symbolic links.
+    Skips winget installation and only installs fonts, creates symbolic links, and sets up drive mappings.
+
+.EXAMPLE
+    .\Invoke-SetupDevMachine.ps1 -SkipFonts
+    
+    Skips font installation and only installs applications, creates symbolic links, and sets up drive mappings.
+
+.EXAMPLE
+    .\Invoke-SetupDevMachine.ps1 -SkipWinget -SkipFonts
+    
+    Skips both winget and font installation, only creates symbolic links and sets up drive mappings.
 
 .EXAMPLE
     .\Invoke-SetupDevMachine.ps1 -WhatIf
@@ -37,13 +53,15 @@
 
 [CmdletBinding(SupportsShouldProcess, ConfirmImpact='Medium')]
 param (
-    [switch]$SkipWinget
+    [switch]$SkipWinget,
+    [switch]$SkipFonts
 )
 
 # Import modular scripts
 . "$PSScriptRoot/scripts/Install-WinGet.ps1"
 . "$PSScriptRoot/scripts/Initialize-DevDriveLetters.ps1" 
 . "$PSScriptRoot/scripts/New-Symlinks.ps1"
+. "$PSScriptRoot/scripts/Install-NerdFonts.ps1"
 
 function Invoke-SetupDevMachine
 {
@@ -54,6 +72,11 @@ function Invoke-SetupDevMachine
     if (-not $SkipWinget) {
         Install-WinGet
         Invoke-WinGetConfiguration -ConfigPath "$PSScriptRoot\config\winget.yaml"
+    }
+    
+    # Install Nerd Fonts (CaskaydiaCove for terminal/VSCode)
+    if (-not $SkipFonts) {
+        Install-NerdFonts -FontNames @("CascadiaCode")
     }
 
     # Initialize development drive mappings

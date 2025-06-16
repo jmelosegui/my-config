@@ -96,6 +96,14 @@ Define applications to install, update, or remove using WinGet DSC format. The c
 - Version pinning and upgrade policies
 - Application-specific configuration settings
 - Conditional installation based on system state
+- Can be skipped with the `-SkipWinGet` parameter
+
+### Font Management
+The setup script automatically installs **CaskaydiaCove Nerd Font** (used in Windows Terminal and VS Code) by downloading from the official Nerd Fonts GitHub repository. The font installation:
+- Downloads the latest version from [ryanoasis/nerd-fonts](https://github.com/ryanoasis/nerd-fonts)
+- Installs fonts system-wide for compatibility with all applications
+- Requires Administrator privileges
+- Can be skipped with the `-SkipFonts` parameter
 
 ### Symbolic Links (`config/symlinks.yaml`)
 Configure which configuration files should be symlinked from the repository to their system locations. Features include:
