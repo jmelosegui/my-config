@@ -12,6 +12,7 @@ properties:
         Ensure: Present
   resources:
     - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: Neovim
       directives:
         description: Installing Neovim
         allowPrerelease: true
@@ -19,8 +20,8 @@ properties:
         id: Neovim.Neovim
         source: winget
         Ensure: Present
-      id: Neovim
     - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: Rider
       directives:
         description: Installing JetBrains Rider
         allowPrerelease: true
@@ -28,8 +29,8 @@ properties:
         id: JetBrains.Rider
         source: winget
         Ensure: Present
-      id: Rider
     - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: VSCode
       directives:
         description: Installing Visual Studio Code
         allowPrerelease: true
@@ -37,8 +38,8 @@ properties:
         id: Microsoft.VisualStudioCode
         source: winget
         Ensure: Present
-      id: VSCode
     - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: OhMyPosh
       directives:
         description: Installing Oh My Posh
         allowPrerelease: true
@@ -46,8 +47,8 @@ properties:
         id: JanDeDobbeleer.OhMyPosh
         source: winget
         Ensure: Present
-      id: OhMyPosh
     - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: Fastfetch
       directives:
         description: Installing Fastfetch
         allowPrerelease: true
@@ -55,8 +56,8 @@ properties:
         id: Fastfetch-cli.Fastfetch
         source: winget
         Ensure: Present
-      id: Fastfetch
     - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: ripgrep
       directives:
         description: Installing ripgrep
         allowPrerelease: true
@@ -64,4 +65,12 @@ properties:
         id: BurntSushi.ripgrep.MSVC
         source: winget
         Ensure: Present
-      id: ripgrep
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: Ubuntu-22.04
+      directives:
+        description: Installing Ubuntu 22.04
+        allowPrerelease: true
+      settings:
+        id: Canonical.Ubuntu.2204
+        source: winget
+        Ensure: Present

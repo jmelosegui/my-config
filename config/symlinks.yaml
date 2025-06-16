@@ -15,4 +15,6 @@ symbolicLinks:
   source: "$PSScriptRoot\\apps\\powershell\\profile.ps1"
 - destination: "%USERPROFILE%\\.config\\fastfetch\\config.jsonc"
   source: "$PSScriptRoot\\apps\\fastfetch\\config.jsonc"
+- destination: "%LOCALAPPDATA%\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json"
+  source: "$PSScriptRoot\\apps\\windows-terminal\\settings.json"
 
