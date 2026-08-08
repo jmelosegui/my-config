@@ -1,128 +1,199 @@
 {
     "$help": "https://aka.ms/terminal-documentation",
     "$schema": "https://aka.ms/terminal-profiles-schema",
-    "actions": [
-      {
-        "command": {
-          "action": "copy",
-          "singleLine": false
+    "actions": 
+    [
+        {
+            "command": 
+            {
+                "action": "copy",
+                "singleLine": false
+            },
+            "id": "User.copy"
         },
-        "id": "User.copy"
-      },
-      {
-        "command": "paste",
-        "id": "User.paste"
-      },
-      {
-        "command": "find",
-        "id": "User.find"
-      }
+        {
+            "command": "find",
+            "id": "User.find"
+        },
+        {
+            "command": "paste",
+            "id": "User.paste"
+        },
+        {
+            "command": 
+            {
+                "action": "sendInput",
+                "input": "\u001b\r"
+            },
+            "id": "User.sendInput.8F63D3A9"
+        }
     ],
     "copyFormatting": "none",
     "copyOnSelect": false,
     "defaultProfile": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
     "experimental.useBackgroundImageForWindow": false,
-    "keybindings": [
-      {
-        "id": "User.copy",
-        "keys": "ctrl+c"
-      },
-      {
-        "id": "User.find",
-        "keys": "ctrl+shift+f"
-      },
-      {
-        "id": "User.paste",
-        "keys": "ctrl+v"
-      }
-    ],
-    "newTabMenu": [
-      {
-        "type": "remainingProfiles"
-      }
-    ],
-    "profiles": {
-      "defaults": {
-        "backgroundImage": "T:\\irobot.png",
-        "backgroundImageOpacity": 0.08,
-        "backgroundImageStretchMode": "uniformToFill",
-        "colorScheme": "Catppuccin Mocha",
-        "font": {
-          "face": "CaskaydiaCove Nerd Font"
-        },
-        "opacity": 95,
-        "useAcrylic": true
-      },
-      "list": [
+    "keybindings": 
+    [
         {
-          "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
-          "hidden": false,
-          "name": "PowerShell",
-          "source": "Windows.Terminal.PowershellCore"
+            "id": "User.sendInput.8F63D3A9",
+            "keys": "shift+enter"
         },
         {
-          "guid": "{2c4de342-38b7-51cf-b940-2309a097f518}",
-          "hidden": false,
-          "name": "Ubuntu 22.04",
-          "commandline": "wsl.exe -d Ubuntu-22.04",
-          "icon": "ms-appx:///ProfileIcons/linux.png",
-          "startingDirectory": "~"
+            "id": "User.copy",
+            "keys": "ctrl+c"
         },
         {
-          "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
-          "hidden": false,
-          "name": "Azure Cloud Shell",
-          "source": "Windows.Terminal.Azure"
+            "id": "User.find",
+            "keys": "ctrl+shift+f"
+        },
+        {
+            "id": "User.paste",
+            "keys": "ctrl+v"
         }
-      ]
+    ],
+    "newTabMenu": 
+    [
+        {
+            "type": "remainingProfiles"
+        }
+    ],
+    "profiles": 
+    {
+        "defaults": 
+        {
+            "backgroundImage": "T:\\irobot.png",
+            "backgroundImageOpacity": 0.08,
+            "backgroundImageStretchMode": "uniformToFill",
+            "colorScheme": "Catppuccin Mocha",
+            "font": 
+            {
+                "face": "CaskaydiaCove Nerd Font"
+            },
+            "opacity": 95,
+            "useAcrylic": true
+        },
+        "list": 
+        [
+            {
+                "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+                "hidden": false,
+                "name": "PowerShell",
+                "source": "Windows.Terminal.PowershellCore"
+            },
+            {
+                "commandline": "wsl.exe -d Ubuntu-22.04",
+                "guid": "{2c4de342-38b7-51cf-b940-2309a097f518}",
+                "hidden": false,
+                "icon": "ms-appx:///ProfileIcons/linux.png",
+                "name": "Ubuntu 22.04",
+                "source": "CanonicalGroupLimited.Ubuntu_79rhkp1fndgsc",
+                "startingDirectory": "~"
+            },
+            {
+                "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
+                "hidden": false,
+                "name": "Azure Cloud Shell",
+                "source": "Windows.Terminal.Azure"
+            },
+            {
+                "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+                "hidden": false,
+                "name": "Windows PowerShell"
+            },
+            {
+                "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
+                "hidden": false,
+                "name": "Command Prompt"
+            },
+            {
+                "guid": "{34459f11-384d-5bae-a971-b592e4038593}",
+                "hidden": true,
+                "name": "Developer Command Prompt for VS 18 [Preview]",
+                "source": "Windows.Terminal.VisualStudio"
+            },
+            {
+                "guid": "{b585bc54-3bec-58a2-880c-427c7815d011}",
+                "hidden": true,
+                "name": "Developer PowerShell for VS 18 [Preview]",
+                "source": "Windows.Terminal.VisualStudio"
+            },
+            {
+                "guid": "{70a136bf-ac9a-517e-a4c1-cdd8448915f3}",
+                "hidden": false,
+                "name": "archlinux",
+                "source": "Microsoft.WSL"
+            },
+            {
+                "guid": "{f079674b-714a-549f-9dd6-b260246aa6da}",
+                "hidden": true,
+                "name": "Developer Command Prompt for VS 18",
+                "source": "Windows.Terminal.VisualStudio"
+            },
+            {
+                "guid": "{dac42897-4bef-5f88-a045-71f3ec4aeeb5}",
+                "hidden": true,
+                "name": "Developer PowerShell for VS 18",
+                "source": "Windows.Terminal.VisualStudio"
+            },
+            {
+                "guid": "{a082cad9-d405-5fbb-9cbb-798b5939e3dc}",
+                "hidden": false,
+                "name": "podman-machine-default",
+                "source": "Microsoft.WSL"
+            }
+        ]
     },
-    "schemes": [
-      {
-        "background": "#1E1E2E",
-        "black": "#45475A",
-        "blue": "#89B4FA",
-        "brightBlack": "#585B70",
-        "brightBlue": "#89B4FA",
-        "brightCyan": "#94E2D5",
-        "brightGreen": "#A6E3A1",
-        "brightPurple": "#F5C2E7",
-        "brightRed": "#F38BA8",
-        "brightWhite": "#A6ADC8",
-        "brightYellow": "#F9E2AF",
-        "cursorColor": "#F5E0DC",
-        "cyan": "#94E2D5",
-        "foreground": "#CDD6F4",
-        "green": "#A6E3A1",
-        "name": "Catppuccin Mocha",
-        "purple": "#F5C2E7",
-        "red": "#F38BA8",
-        "selectionBackground": "#585B70",
-        "white": "#BAC2DE",
-        "yellow": "#F9E2AF"
-      }
+    "schemes": 
+    [
+        {
+            "background": "#1E1E2E",
+            "black": "#45475A",
+            "blue": "#89B4FA",
+            "brightBlack": "#585B70",
+            "brightBlue": "#89B4FA",
+            "brightCyan": "#94E2D5",
+            "brightGreen": "#A6E3A1",
+            "brightPurple": "#F5C2E7",
+            "brightRed": "#F38BA8",
+            "brightWhite": "#A6ADC8",
+            "brightYellow": "#F9E2AF",
+            "cursorColor": "#F5E0DC",
+            "cyan": "#94E2D5",
+            "foreground": "#CDD6F4",
+            "green": "#A6E3A1",
+            "name": "Catppuccin Mocha",
+            "purple": "#F5C2E7",
+            "red": "#F38BA8",
+            "selectionBackground": "#585B70",
+            "white": "#BAC2DE",
+            "yellow": "#F9E2AF"
+        }
     ],
     "theme": "Catppuccin Mocha",
-    "themes": [
-      {
-        "name": "Catppuccin Mocha",
-        "tab": {
-          "background": "#1E1E2EFF",
-          "iconStyle": "default",
-          "showCloseButton": "always",
-          "unfocusedBackground": null
-        },
-        "tabRow": {
-          "background": "#181825FF",
-          "unfocusedBackground": "#11111BFF"
-        },
-        "window": {
-          "applicationTheme": "dark",
-          "experimental.rainbowFrame": false,
-          "frame": null,
-          "unfocusedFrame": null,
-          "useMica": false
+    "themes": 
+    [
+        {
+            "name": "Catppuccin Mocha",
+            "tab": 
+            {
+                "background": "#1E1E2EFF",
+                "iconStyle": "default",
+                "showCloseButton": "always",
+                "unfocusedBackground": null
+            },
+            "tabRow": 
+            {
+                "background": "#181825FF",
+                "unfocusedBackground": "#11111BFF"
+            },
+            "window": 
+            {
+                "applicationTheme": "dark",
+                "experimental.rainbowFrame": false,
+                "frame": null,
+                "unfocusedFrame": null,
+                "useMica": false
+            }
         }
-      }
     ]
-  }
-  
+}
