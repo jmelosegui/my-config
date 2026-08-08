@@ -94,5 +94,28 @@
     },
     "extensions.experimental.affinity": {
         "asvetliakov.vscode-neovim": 1
-    }
+    },
+    "mssql.connectionGroups": [
+        {
+            "name": "ROOT",
+            "id": "CDE3921A-E0FB-4172-AA55-D74B291F44B0"
+        }
+    ],
+    "application.shellEnvironmentResolutionTimeout": 60,
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "[dockercompose]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2,
+        "editor.autoIndent": "advanced",
+        "editor.quickSuggestions": {
+            "other": true,
+            "comments": false,
+            "strings": true
+        },
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    "[github-actions-workflow]": {
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    "security.workspace.trust.untrustedFiles": "open"
 }
