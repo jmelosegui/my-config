@@ -1,15 +1,14 @@
 # yaml-language-server: $schema=https://aka.ms/configuration-dsc-schema/0.2.0
 # WinGet DSC Configuration File
+#
+# Each package is pinned to a specific version. To change a target version,
+# first confirm it exists in the winget source:
+#   winget show <id> --versions
+# Removing the `version:` line reverts that package to "install if not present"
+# (latest at first install, no auto-upgrade thereafter).
 
 properties:
   configurationVersion: 0.2.0
-  assertions:
-    - resource: Microsoft.Windows.Developer/DeveloperMode
-      directives:
-        description: Enable Developer Mode
-        allowPrerelease: true
-      settings:
-        Ensure: Present
   resources:
     - resource: Microsoft.WinGet.DSC/WinGetPackage
       id: Neovim
@@ -18,15 +17,27 @@ properties:
         allowPrerelease: true
       settings:
         id: Neovim.Neovim
+        version: "0.12.4"
         source: winget
         Ensure: Present
     - resource: Microsoft.WinGet.DSC/WinGetPackage
-      id: Rider
+      id: Zed
       directives:
-        description: Installing JetBrains Rider
+        description: Installing Zed
         allowPrerelease: true
       settings:
-        id: JetBrains.Rider
+        id: ZedIndustries.Zed
+        version: "1.14.2"
+        source: winget
+        Ensure: Present
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: FilePilot
+      directives:
+        description: Installing File Pilot
+        allowPrerelease: true
+      settings:
+        id: Voidstar.FilePilot
+        version: "0.8.2"
         source: winget
         Ensure: Present
     - resource: Microsoft.WinGet.DSC/WinGetPackage
@@ -36,6 +47,7 @@ properties:
         allowPrerelease: true
       settings:
         id: Microsoft.VisualStudioCode
+        version: "1.126.0"
         source: winget
         Ensure: Present
     - resource: Microsoft.WinGet.DSC/WinGetPackage
@@ -45,6 +57,7 @@ properties:
         allowPrerelease: true
       settings:
         id: JanDeDobbeleer.OhMyPosh
+        version: "30.6.2"
         source: winget
         Ensure: Present
     - resource: Microsoft.WinGet.DSC/WinGetPackage
@@ -54,6 +67,7 @@ properties:
         allowPrerelease: true
       settings:
         id: Fastfetch-cli.Fastfetch
+        version: "2.66.0"
         source: winget
         Ensure: Present
     - resource: Microsoft.WinGet.DSC/WinGetPackage
@@ -63,6 +77,17 @@ properties:
         allowPrerelease: true
       settings:
         id: BurntSushi.ripgrep.MSVC
+        version: "15.2.0"
+        source: winget
+        Ensure: Present
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: lazygit
+      directives:
+        description: Installing lazygit
+        allowPrerelease: true
+      settings:
+        id: JesseDuffield.lazygit
+        version: "0.63.1"
         source: winget
         Ensure: Present
     - resource: Microsoft.WinGet.DSC/WinGetPackage
@@ -72,5 +97,6 @@ properties:
         allowPrerelease: true
       settings:
         id: Canonical.Ubuntu.2204
+        version: "2204.2.47.0"
         source: winget
         Ensure: Present
