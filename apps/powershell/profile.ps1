@@ -27,6 +27,41 @@ Function func_getip
 }
 Set-Alias -Name ip -Value func_getip
 
+Function func_arellia_service
+{
+    param(
+        [Parameter(Mandatory=$true)]
+        [ValidateSet('start','stop','restart','status')]
+        [string]$action
+    )
+
+    $serviceName = 'ArelliaACSvc'
+
+    switch ($action.ToLower()) {
+        'start' {
+            Write-Host "Starting $serviceName service..." -ForegroundColor Green
+            Start-Service -Name $serviceName
+            Write-Host "$serviceName service started successfully." -ForegroundColor Green
+        }
+        'stop' {
+            Write-Host "Stopping $serviceName service..." -ForegroundColor Yellow
+            Stop-Service -Name $serviceName
+            Write-Host "$serviceName service stopped successfully." -ForegroundColor Yellow
+        }
+        'restart' {
+            Write-Host "Restarting $serviceName service..." -ForegroundColor Cyan
+            Restart-Service -Name $serviceName
+            Write-Host "$serviceName service restarted successfully." -ForegroundColor Cyan
+        }
+        'status' {
+            $service = Get-Service -Name $serviceName
+            $statusColor = if ($service.Status -eq 'Running') { 'Green' } else { 'Red' }
+            Write-Host "$serviceName service status: $($service.Status)" -ForegroundColor $statusColor
+        }
+    }
+}
+Set-Alias -Name arellia -Value func_arellia_service
+
 Set-Alias -Name k kubectl
 Set-Alias -Name d docker
 Set-Alias -Name which where.exe
@@ -67,7 +102,7 @@ function func_get_hash
     {
         return $result.ToLower()
     }
-    
+
     return $result
 }
 Set-Alias -Name Get-Hash -Value func_get_hash
@@ -76,7 +111,7 @@ function func_deflate
 {
     param(
         [Parameter(Mandatory=$true, ValueFromPipeline = $true)]
-        [ValidateScript({            
+        [ValidateScript({
                 if( -Not (Test-Path $_ -PathType leaf) )
                 {
                     throw "File does not exist"
@@ -85,7 +120,7 @@ function func_deflate
             })]
         [string]$Path
     )
-    $ErrorActionPreference = 'Stop'    
+    $ErrorActionPreference = 'Stop'
     $fs = New-Object IO.FileStream((Resolve-Path $Path), [IO.FileMode]::Open, [IO.FileAccess]::Read)
     $fs.Position = 2
     $cs = New-Object IO.Compression.DeflateStream($fs, [IO.Compression.CompressionMode]::Decompress)
@@ -121,7 +156,6 @@ Set-Alias -Name ConvertFrom-Base64 -Value func_ConvertFrom-Base64
 $path = @(
     "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\Azure Storage Emulator",
     "C:\Program Files\Neovim\bin\",
-    "P:\DevOps\DbDeploy\DbDeploy.Console\bin\Debug\net48",
     "P:\Personales\git-console\GitConsole\bin\Release\net7.0\win-x64",
     "U:\azcopy",
     "U:\hashicorp\vault",
@@ -134,8 +168,11 @@ $path = @(
     "U:\nvm",
     "U:\postgresql-15.4-1-windows-x64-binaries\pgsql\bin",
     "U:\terraform",
-    "C:\Program Files\MuseScore 3\bin",
-    "U:\ffmpeg-5.0-essentials_build\bin"
+    "U:\ffmpeg-5.0-essentials_build\bin",
+    "U:\git-sweep",
+    "U:\Rafay",
+    "U:\grpcurl",
+    "C:\Users\jelosegui003\.local\bin"
 )
 
 $env:Path += ';' + $($path -join ';')
