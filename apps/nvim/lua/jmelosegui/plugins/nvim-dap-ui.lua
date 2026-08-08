@@ -1,7 +1,8 @@
 return {
     "rcarriga/nvim-dap-ui",
     dependencies = {
-        "mfussenegger/nvim-dap"
+        "mfussenegger/nvim-dap",
+        "nvim-neotest/nvim-nio"
     },
     config = function()
         local dap = require("dap")
@@ -99,9 +100,6 @@ return {
         dap.listeners.before.event_exited["dapui_config"] = function()
             dapui.close()
         end
-
-        vim.keymap.set("n", "<leader>e", vim.cmd.NvimTreeToggle)
-
 
         vim.keymap.set("n", "<F5>", function() vim.cmd("lua require'dap'.continue()") end, { silent = true })
         vim.keymap.set("n", "<F10>", function() vim.cmd("lua require'dap'.step_over()") end, { silent = true })
