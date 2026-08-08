@@ -43,10 +43,30 @@ function Install-NerdFonts {
         [string[]]$FontNames = @("CascadiaCode"),
         
         [Parameter(Mandatory = $false)]
-        [string]$Version = "latest"
+        [string]$Version = "latest",
+
+        [Parameter(Mandatory = $false)]
+        [switch]$Force
     )
-    
+
     Write-Host "Installing Nerd Fonts..." -ForegroundColor Cyan
+
+    # State file tracking which font packs are installed at which version,
+    # so we can skip re-downloading fonts that are already up to date.
+    $stateDir = Join-Path $env:LOCALAPPDATA "jmelosegui-devsetup"
+    $stateFile = Join-Path $stateDir "nerdfonts-installed.json"
+    $installedState = @{}
+    if (Test-Path $stateFile) {
+        try {
+            $json = Get-Content -Path $stateFile -Raw | ConvertFrom-Json
+            foreach ($prop in $json.PSObject.Properties) {
+                $installedState[$prop.Name] = $prop.Value
+            }
+        }
+        catch {
+            Write-Warning "Could not read font state file, treating all fonts as not installed."
+        }
+    }
     
     # Check if running as Administrator
     $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")
@@ -78,7 +98,15 @@ function Install-NerdFonts {
         foreach ($fontName in $FontNames) {
             try {
                 Write-Host "Processing font: $fontName" -ForegroundColor Yellow
-                
+
+                # Fast path: skip download entirely if this pack is already
+                # recorded as installed at the target version.
+                if (-not $Force -and $installedState[$fontName] -eq $Version) {
+                    Write-Host "  Already installed at $Version - skipping" -ForegroundColor DarkGray
+                    $fontsSkipped += $fontName
+                    continue
+                }
+
                 # Download font
                 $fontZip = "$fontName.zip"
                 $downloadUrl = "https://github.com/ryanoasis/nerd-fonts/releases/download/$Version/$fontZip"
@@ -120,18 +148,32 @@ function Install-NerdFonts {
                 }
                 
                 $installedCount = 0
+                $upToDateCount = 0
                 foreach ($fontFile in $fontFiles) {
                     if ($PSCmdlet.ShouldProcess($fontFile.Name, "Install font")) {
                         try {
-                            # Copy to Windows Fonts directory
                             $destPath = Join-Path "C:\Windows\Fonts" $fontFile.Name
-                            Copy-Item -Path $fontFile.FullName -Destination $destPath -Force
-                            
-                            # Register font in registry
-                            $fontName = $fontFile.BaseName
                             $regPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
-                            Set-ItemProperty -Path $regPath -Name "$fontName (TrueType)" -Value $fontFile.Name -Force
-                            
+
+                            # Skip files that are already installed and identical -
+                            # avoids overwriting in-use font files (which fails).
+                            if (-not $Force -and (Test-Path $destPath)) {
+                                $srcHash = (Get-FileHash -Path $fontFile.FullName -Algorithm SHA256).Hash
+                                $dstHash = (Get-FileHash -Path $destPath -Algorithm SHA256).Hash
+                                if ($srcHash -eq $dstHash) {
+                                    # Ensure the registry entry exists even when the file is already present.
+                                    Set-ItemProperty -Path $regPath -Name "$($fontFile.BaseName) (TrueType)" -Value $fontFile.Name -Force -ErrorAction SilentlyContinue
+                                    $upToDateCount++
+                                    continue
+                                }
+                            }
+
+                            # Copy to Windows Fonts directory
+                            Copy-Item -Path $fontFile.FullName -Destination $destPath -Force
+
+                            # Register font in registry
+                            Set-ItemProperty -Path $regPath -Name "$($fontFile.BaseName) (TrueType)" -Value $fontFile.Name -Force
+
                             Write-Host "    Installed: $($fontFile.Name)" -ForegroundColor Green
                             $installedCount++
                         }
@@ -140,9 +182,20 @@ function Install-NerdFonts {
                         }
                     }
                 }
-                
-                if ($installedCount -gt 0) {
-                    $fontsInstalled += $fontName
+
+                if ($upToDateCount -gt 0 -and $installedCount -eq 0) {
+                    Write-Host "  Already up to date ($upToDateCount files)" -ForegroundColor DarkGray
+                }
+
+                if ($installedCount -gt 0 -or $upToDateCount -gt 0) {
+                    # Record the version so future runs can take the fast path.
+                    $installedState[$fontName] = $Version
+                    if ($installedCount -gt 0) {
+                        $fontsInstalled += $fontName
+                    }
+                    else {
+                        $fontsSkipped += $fontName
+                    }
                 }
                 else {
                     $fontsSkipped += $fontName
@@ -154,6 +207,17 @@ function Install-NerdFonts {
             }
         }
         
+        # Persist install state for future fast-path skips
+        try {
+            if (-not (Test-Path $stateDir)) {
+                New-Item -ItemType Directory -Path $stateDir -Force | Out-Null
+            }
+            $installedState | ConvertTo-Json | Set-Content -Path $stateFile -Encoding UTF8
+        }
+        catch {
+            Write-Warning "Could not save font state file: $($_.Exception.Message)"
+        }
+
         # Summary
         Write-Host ""
         Write-Host "Font Installation Summary:" -ForegroundColor Cyan
