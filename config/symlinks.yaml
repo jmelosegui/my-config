@@ -8,7 +8,7 @@ symbolicLinks:
 - destination: "%USERPROFILE%\\AppData\\Roaming\\Code\\User\\keybindings.json"
   source: "$PSScriptRoot\\apps\\vscode\\keybindings.json"
 - destination: "%USERPROFILE%\\Documents\\WindowsPowerShell\\Microsoft.PowerShell_profile.ps1"
-  source: "$PSScriptRoot\\aaps\\powershell\\profile.ps1"
+  source: "$PSScriptRoot\\apps\\powershell\\profile.ps1"
 - destination: "%USERPROFILE%\\Documents\\PowerShell\\Microsoft.VSCode_profile.ps1"
   source: "$PSScriptRoot\\apps\\powershell\\profile.ps1"
 - destination: "%USERPROFILE%\\Documents\\PowerShell\\Microsoft.PowerShell_profile.ps1"
