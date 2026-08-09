@@ -49,6 +49,32 @@ return {
 
             -- Recommended: Set a global keymap to open oil in the current file's directory
             vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+
+            -- Reflect the current working directory in the terminal (Windows Terminal
+            -- tab) title. Neovim emits an OSC title escape sequence when `title` is on
+            -- and `titlestring` changes. Only `actions.cd` (the ` mapping above) changes
+            -- cwd, so DirChanged fires precisely when you press ` inside oil; plain oil
+            -- browsing leaves the title untouched.
+            vim.o.title = true
+
+            local function set_tab_title()
+                local cwd = vim.fn.getcwd()
+                -- The tail of a drive root like "T:\" is empty, and an empty
+                -- titlestring leaves the old title in place, so fall back to the
+                -- full cwd in that case.
+                local name = vim.fn.fnamemodify(cwd, ":t")
+                if name == "" then
+                    name = cwd
+                end
+                vim.o.titlestring = name
+            end
+
+            vim.api.nvim_create_autocmd("DirChanged", {
+                group = vim.api.nvim_create_augroup("OilTabTitle", { clear = true }),
+                callback = set_tab_title,
+            })
+
+            set_tab_title() -- initialize for the launch directory
         end
     },
     {
