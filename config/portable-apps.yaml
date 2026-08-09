@@ -3,5 +3,13 @@ properties:
   apps:
   - name: jq
     downloadUrl: https://github.com/jqlang/jq/releases/download/jq-$version/jq-win64.exe
-    fileName: jq.exe  
+    fileName: jq.exe
     version: 1.7.1
+  - name: nuget
+    downloadUrl: https://dist.nuget.org/win-x86-commandline/v$version/nuget.exe
+    fileName: nuget.exe
+    version: 6.11.0
+  - name: ripgrep
+    downloadUrl: https://github.com/BurntSushi/ripgrep/releases/download/$version/ripgrep-$version-x86_64-pc-windows-msvc.zip
+    fileName: rg.exe
+    version: 14.1.1
