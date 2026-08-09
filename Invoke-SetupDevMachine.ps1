@@ -8,7 +8,7 @@
     2. Installing Nerd Fonts for terminal and development use
     3. Creating symbolic links for configuration files from the repository to their expected system locations
     4. Setting up development drive mappings
-    
+
     The script uses winget to install applications, downloads and installs fonts from GitHub,
     and creates symbolic links based on a YAML configuration file.
     Existing files are backed up before being replaced with symbolic links.
@@ -21,27 +21,27 @@
 
 .EXAMPLE
     .\Invoke-SetupDevMachine.ps1
-    
+
     Sets up the machine with winget applications and creates symbolic links.
 
 .EXAMPLE
     .\Invoke-SetupDevMachine.ps1 -SkipWinget
-    
+
     Skips winget installation and only installs fonts, creates symbolic links, and sets up drive mappings.
 
 .EXAMPLE
     .\Invoke-SetupDevMachine.ps1 -SkipFonts
-    
+
     Skips font installation and only installs applications, creates symbolic links, and sets up drive mappings.
 
 .EXAMPLE
     .\Invoke-SetupDevMachine.ps1 -SkipWinget -SkipFonts
-    
+
     Skips both winget and font installation, only creates symbolic links and sets up drive mappings.
 
 .EXAMPLE
     .\Invoke-SetupDevMachine.ps1 -WhatIf
-    
+
     Shows what changes would be made without actually executing them.
 
 .NOTES
@@ -73,7 +73,7 @@ function Invoke-SetupDevMachine
         Install-WinGet
         Invoke-WinGetConfiguration -ConfigPath "$PSScriptRoot\config\winget.yaml"
     }
-    
+
     # Install Nerd Fonts (CaskaydiaCove for terminal/VSCode)
     if (-not $SkipFonts) {
         Install-NerdFonts -FontNames @("CascadiaCode")
