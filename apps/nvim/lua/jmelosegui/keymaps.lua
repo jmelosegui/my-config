@@ -1,5 +1,3 @@
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
-
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move highlighted line up", silent = true })
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move highlighted line down", silent = true })
 
@@ -16,8 +14,12 @@ vim.keymap.set("n", "<Tab>", "<cmd>tabnext<CR>", { desc = "Goto Next Tab", silen
 vim.keymap.set("n", "<S-Tab>", "<cmd>tabprevious<CR>", { desc = "Goto Previous Tab", silent = true })
 
 -- Terminal: open a full-width terminal in the lower split, ready to type
-vim.keymap.set("n", "<leader>t", "<cmd>botright split | resize 12 | term<CR>i",
-  { desc = "Open terminal in a bottom split", silent = true })
+vim.keymap.set(
+	"n",
+	"<leader>t",
+	"<cmd>botright split | resize 12 | term<CR>i",
+	{ desc = "Open terminal in a bottom split", silent = true }
+)
 -- Exit terminal-mode back to normal mode
 vim.keymap.set("t", "<C-\\><C-\\>", "<C-\\><C-n>", { desc = "Exit terminal mode", silent = true })
 
@@ -39,14 +41,14 @@ vim.keymap.set("n", "Q", "@qj")
 vim.keymap.set("x", "Q", ":norm @q<CR>")
 
 -- Remove lines with only empty spaces
-vim.keymap.set("n", "<leader>ev", ":%s/^\\s*$//gn | %s/^\\s*$//g", { desc = "Remove trailing whitespaces" })
+vim.keymap.set("n", "<leader>rw", ":%s/^\\s*$//gn | %s/^\\s*$//g", { desc = "Remove trailing whitespaces" })
 
 -- Format current buffer
 vim.keymap.set(
-  'n',                   -- mode: normal
-  '<leader>f',           -- key combo
-  function()             -- what to run
-    vim.lsp.buf.format({ async = true })
-  end,
-  { noremap = true, silent = true, desc = "LSP: format buffer" }
+	"n", -- mode: normal
+	"<leader>f", -- key combo
+	function() -- what to run
+		vim.lsp.buf.format({ async = true })
+	end,
+	{ noremap = true, silent = true, desc = "LSP: format buffer" }
 )
