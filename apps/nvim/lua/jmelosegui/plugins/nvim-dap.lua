@@ -22,13 +22,14 @@ return {
             }
         }
 
-        --local codelldb = require('mason-registry').get_package('codelldb'):get_install_path() .. '/codelldb'
+        -- Resolve codelldb from Mason's bin dir under the active Neovim data dir,
+        -- so it works regardless of the Windows username. Install it once with
+        -- :MasonInstall codelldb
         dap.adapters.codelldb = {
             type = 'server',
             port = '${port}',
             executable = {
-                --command = "C:\\Users\\jmelo\\AppData\\Local\\nvim-data\\mason\\packages\\codelldb\\extension\\adapter\\codelldb.exe",
-                command = "C:\\Users\\jmelo\\AppData\\Local\\nvim-data\\mason\\bin\\codelldb.cmd",
+                command = vim.fn.stdpath("data") .. "/mason/bin/codelldb.cmd",
                 args = { '--port', '${port}' },
             },
         }
@@ -38,11 +39,20 @@ return {
                 name = "Debug",
                 request = "launch",
                 program = function()
-                    return vim.fn.input("Path to executable: ", "T:/rust/guessing_game/target/debug/guessing_game.exe", "file")
-                --    return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/target/debug/collections.exe", "file")
+                    -- Default to an executable next to the current file, e.g. a
+                    -- `rustc primes.rs` build produces primes.exe alongside primes.rs.
+                    local guess = vim.fn.expand("%:p"):gsub("%.rs$", ".exe")
+                    return vim.fn.input("Path to executable: ", guess, "file")
                 end,
-                cwd = "T:\\rust\\guessing_game\\"
-                --cwd = "${workspaceFolder}"
+                cwd = function()
+                    return vim.fn.expand("%:p:h")
+                end,
+                -- Prompt for command-line arguments on each launch; split on
+                -- spaces so "10 20 foo" becomes { "10", "20", "foo" }. Leave the
+                -- prompt empty to run with no args.
+                args = function()
+                    return vim.split(vim.fn.input("Args: "), " ", { trimempty = true })
+                end,
             }
         }
     end
