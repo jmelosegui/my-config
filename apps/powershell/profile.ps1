@@ -14,13 +14,6 @@ Function func_query_vg_ado
 }
 Set-Alias -Name adoq -Value func_query_vg_ado
 
-Function func_gitprune
-{ 
-    git fetch -p
-    git branch --v | Where-Object { $_ -match "\[gone\]" } | ForEach-Object { -split $_ | Select-Object -First 1 } | ForEach-Object { git branch -D $_ } 
-}
-Set-Alias -Name gitprune -Value func_gitprune
-
 Function func_getip
 { 
     Invoke-WebRequest -uri 'https://api.ipify.org?format=json' | ConvertFrom-Json | Select-Object -expandproperty ip | ForEach-Object { Write-Host $_; Set-Clipboard $_} 
@@ -36,27 +29,66 @@ Function func_arellia_service
     )
 
     $serviceName = 'ArelliaACSvc'
+    # Thycotic agent executable. $agentName is the process name Get-Process/Stop-Process
+    # use (the file name without the .exe extension); $agentPath is used to launch it.
+    $agentName = 'Arellia.Agent.Service'
+    $agentPath = 'C:\Program Files\Thycotic\Agents\Agent\Arellia.Agent.Service.exe'
 
     switch ($action.ToLower()) {
         'start' {
             Write-Host "Starting $serviceName service..." -ForegroundColor Green
             Start-Service -Name $serviceName
             Write-Host "$serviceName service started successfully." -ForegroundColor Green
+
+            Write-Host "Starting $agentName process..." -ForegroundColor Green
+            if (Get-Process -Name $agentName -ErrorAction SilentlyContinue) {
+                Write-Host "$agentName process is already running." -ForegroundColor DarkGray
+            } elseif (Test-Path $agentPath) {
+                Start-Process -FilePath $agentPath
+                Write-Host "$agentName process started successfully." -ForegroundColor Green
+            } else {
+                Write-Host "$agentName executable not found at $agentPath." -ForegroundColor Red
+            }
         }
         'stop' {
             Write-Host "Stopping $serviceName service..." -ForegroundColor Yellow
             Stop-Service -Name $serviceName
             Write-Host "$serviceName service stopped successfully." -ForegroundColor Yellow
+
+            Write-Host "Stopping $agentName process..." -ForegroundColor Yellow
+            $agentProcess = Get-Process -Name $agentName -ErrorAction SilentlyContinue
+            if ($agentProcess) {
+                Stop-Process -Name $agentName -Force
+                Write-Host "$agentName process stopped successfully." -ForegroundColor Yellow
+            } else {
+                Write-Host "$agentName process is not running." -ForegroundColor DarkGray
+            }
         }
         'restart' {
             Write-Host "Restarting $serviceName service..." -ForegroundColor Cyan
             Restart-Service -Name $serviceName
             Write-Host "$serviceName service restarted successfully." -ForegroundColor Cyan
+
+            Write-Host "Restarting $agentName process..." -ForegroundColor Cyan
+            if (Get-Process -Name $agentName -ErrorAction SilentlyContinue) {
+                Stop-Process -Name $agentName -Force
+            }
+            if (Test-Path $agentPath) {
+                Start-Process -FilePath $agentPath
+                Write-Host "$agentName process restarted successfully." -ForegroundColor Cyan
+            } else {
+                Write-Host "$agentName executable not found at $agentPath." -ForegroundColor Red
+            }
         }
         'status' {
             $service = Get-Service -Name $serviceName
             $statusColor = if ($service.Status -eq 'Running') { 'Green' } else { 'Red' }
             Write-Host "$serviceName service status: $($service.Status)" -ForegroundColor $statusColor
+
+            $agentProcess = Get-Process -Name $agentName -ErrorAction SilentlyContinue
+            $agentStatus = if ($agentProcess) { 'Running' } else { 'Stopped' }
+            $agentColor = if ($agentProcess) { 'Green' } else { 'Red' }
+            Write-Host "$agentName process status: $agentStatus" -ForegroundColor $agentColor
         }
     }
 }
@@ -166,6 +198,7 @@ $path = @(
     "U:\node",
     "U:\nuget",
     "U:\nvm",
+    "U:\ripgrep",
     "U:\postgresql-15.4-1-windows-x64-binaries\pgsql\bin",
     "U:\terraform",
     "U:\ffmpeg-5.0-essentials_build\bin",
