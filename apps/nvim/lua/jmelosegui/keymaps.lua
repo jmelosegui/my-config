@@ -11,6 +11,16 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Scroll Up, keeping the cursor 
 vim.keymap.set("n", "<leader>bb", ":bprev<CR>", { desc = "Goto Previous Buffer", silent = true })
 vim.keymap.set("n", "<leader>bn", ":bnext<CR>", { desc = "Goto Next Buffer", silent = true })
 
+-- Tab-page navigation (e.g. oil's <C-t> opens a selection in a new tab)
+vim.keymap.set("n", "<Tab>", "<cmd>tabnext<CR>", { desc = "Goto Next Tab", silent = true })
+vim.keymap.set("n", "<S-Tab>", "<cmd>tabprevious<CR>", { desc = "Goto Previous Tab", silent = true })
+
+-- Terminal: open a full-width terminal in the lower split, ready to type
+vim.keymap.set("n", "<leader>t", "<cmd>botright split | resize 12 | term<CR>i",
+  { desc = "Open terminal in a bottom split", silent = true })
+-- Exit terminal-mode back to normal mode
+vim.keymap.set("t", "<C-\\><C-\\>", "<C-\\><C-n>", { desc = "Exit terminal mode", silent = true })
+
 -- Move between splits
 vim.keymap.set({ "n" }, "<C-h>", ":wincmd h<CR>", { desc = "Goto Left Buffer", silent = true })
 vim.keymap.set({ "n" }, "<C-l>", ":wincmd l<CR>", { desc = "Goto Right Buffer", silent = true })
