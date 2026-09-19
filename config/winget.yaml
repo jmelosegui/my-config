@@ -100,3 +100,12 @@ properties:
         version: "2204.2.47.0"
         source: winget
         Ensure: Present
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: zoxide
+      directives:
+        description: Installing zoxide
+        allowPrerelease: true
+      settings:
+        id: ajeetdsouza.zoxide
+        source: winget
+        Ensure: Present
