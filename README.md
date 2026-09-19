@@ -94,6 +94,8 @@ The script will prompt for elevation when needed or provide clear error messages
 Define applications to install, update, or remove using WinGet DSC format. The configuration supports:
 - Package installation from various sources
 - Version pinning and upgrade policies
+- Packages installed at a version newer than the pinned one are reported as a warning and left
+  untouched, so a stale pin never downgrades an app. Update the pin to match the installed version.
 - Application-specific configuration settings
 - Conditional installation based on system state
 - Can be skipped with the `-SkipWinGet` parameter
