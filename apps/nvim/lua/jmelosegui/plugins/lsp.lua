@@ -29,16 +29,14 @@ return {
                 "dockerls",
                 "docker_compose_language_service",
                 "eslint",
-                "gopls",
                 "helm_ls",
                 "html",
                 "jsonls",
                 "lua_ls",
                 "omnisharp",
                 "powershell_es",
-                "rust-analyzer",
                 "terraformls",
-                "tsserver",
+                "rust_analyzer",
             },
             handlers = {
 
@@ -50,31 +48,6 @@ return {
                     local opts = { noremap = true, silent = true }
 
                     local on_attach = function(client, bufnr)
-                        opts.buffer = bufnr
-
-                        opts.desc = "Show LSP references"
-                        vim.keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts) --show definitions, references
-
-                        opts.desc = "Go to declaration"
-                        vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
-
-                        opts.desc = "Show LSP definition"
-                        vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts) --show lsp definitions
-
-                        opts.desc = "Show LSP implementations"
-                        vim.keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts) --show lsp definitions
-
-                        opts.desc = "Smart Renames"
-                        vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts) -- smart rename
-
-                        opts.desc = "Go to previous diagnostic"
-                        vim.keymap.set("n", "[d", vim.diagnostic.goto_next, opts)
-
-                        opts.desc = "Go to next diagnostic"
-                        vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, opts)
-
-                        opts.desc = "Hover documentation"
-                        vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
                     end
 
                     local settings = {
@@ -102,6 +75,16 @@ return {
                 end,
             },
         })
+
+        -- Global LSP keybindings
+        vim.keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", { noremap = true, silent = true, desc = "Show LSP references" })
+        vim.keymap.set("n", "gD", "<cmd>Telescope lsp_declarations<CR>", { noremap = true, silent = true, desc = "Go to declaration" })
+        vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", { noremap = true, silent = true, desc = "Show LSP definition" })
+        vim.keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", { noremap = true, silent = true, desc = "Show LSP implementations" })
+        vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { noremap = true, silent = true, desc = "Smart Renames" })
+        vim.keymap.set("n", "[d", vim.diagnostic.goto_next, { noremap = true, silent = true, desc = "Go to next diagnostic" })
+        vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, { noremap = true, silent = true, desc = "Go to previous diagnostic" })
+        vim.keymap.set("n", "K", vim.lsp.buf.hover, { noremap = true, silent = true, desc = "Hover documentation" })
     end,
 }
 
