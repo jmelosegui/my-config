@@ -26,12 +26,17 @@ return {
                     ["<CR>"] = "actions.select",
                     ["<C-s>"] = { "actions.select", opts = { vertical = true }, desc =
                     "Open the selection in a vertical split" },
-                    ["<C-h>"] = { "actions.select", opts = { horizontal = true }, desc =
+                    -- <C-h> and <C-l> are reserved for window navigation
+                    -- (see keymaps.lua); oil merges this table over its defaults,
+                    -- so they have to be disabled explicitly with `false`.
+                    ["<C-h>"] = false,
+                    ["<C-l>"] = false,
+                    ["<C-x>"] = { "actions.select", opts = { horizontal = true }, desc =
                     "Open the selection in a horizontal split" },
                     ["<C-t>"] = { "actions.select", opts = { tab = true }, desc = "Open the selection in a new tab" },
                     ["<C-p>"] = "actions.preview",
                     ["<C-c>"] = "actions.close",
-                    ["<C-l>"] = "actions.refresh",
+                    ["<F5>"] = "actions.refresh",
                     ["-"] = "actions.parent",
                     ["_"] = "actions.open_cwd",
                     ["`"] = "actions.cd",
@@ -41,6 +46,22 @@ return {
                     ["gx"] = "actions.open_external",
                     ["g."] = "actions.toggle_hidden",
                     ["g\\"] = "actions.toggle_trash",
+                    ["gy"] = {
+                        callback = function()
+                            local oil = require("oil")
+                            local entry = oil.get_cursor_entry()
+                            local dir = oil.get_current_dir()
+                            if not entry or not dir then
+                                return
+                            end
+                            -- Windows-native separators so the path can be pasted
+                            -- straight into Explorer or PowerShell.
+                            local path = (dir .. entry.name):gsub("/", "\\")
+                            vim.fn.setreg("+", path)
+                            vim.notify("Copied: " .. path)
+                        end,
+                        desc = "Copy the full path of the entry under the cursor",
+                    },
                 },
                 view_options = {
                     show_hidden = false, -- Change to true if you want to see dotfiles by default
