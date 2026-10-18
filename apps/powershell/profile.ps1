@@ -207,10 +207,23 @@ $path = @(
     "U:\grpcurl",
     "C:\Users\jelosegui003\.local\bin",
     "U:\kubectl",
-    "C:\Users\jelosegui003\.azure-kubelogin\"
+    "C:\Users\jelosegui003\.azure-kubelogin\",
+    "$env:USERPROFILE\.dotnet\tools"
 )
 
 $env:Path += ';' + $($path -join ';')
+
+# WinGet portable apps: the Links folder holds the command aliases, but winget
+# doesn't always create them (e.g. GitHub.Copilot), so also add every package
+# folder that contains an exe (top level or one folder down, like ripgrep).
+$wingetRoot = "$env:LOCALAPPDATA\Microsoft\WinGet"
+$wingetPath = @("$wingetRoot\Links") + (
+    Get-ChildItem "$wingetRoot\Packages" -Directory -ErrorAction SilentlyContinue |
+        ForEach-Object { Get-ChildItem $_.FullName -Filter *.exe -File -Depth 1 -ErrorAction SilentlyContinue } |
+        Select-Object -ExpandProperty DirectoryName -Unique
+)
+$currentPath = $env:Path -split ';'
+$env:Path += ';' + (($wingetPath | Where-Object { $_ -notin $currentPath }) -join ';')
 
 function Get-ProgramFiles32()
 {
@@ -227,6 +240,14 @@ function Get-VsInstallLocation()
     $vswhere = "$programFiles\Microsoft Visual Studio\Installer\vswhere.exe"
     if (Test-Path $vswhere)
     {
+        # VsDevCmd.bat (invoked by Enter-VsDevShell) calls vswhere.exe unqualified,
+        # so its folder has to be on PATH or it prints a "not recognized" error.
+        $installerDir = Split-Path $vswhere
+        if ($env:PATH -notlike "*$installerDir*")
+        {
+            $env:PATH = "$installerDir;$env:PATH"
+        }
+
         $vsinstallpath = (. "$vswhere" -latest -property installationPath -format value -nologo | Out-String).Trim()
         return $vsinstallpath
     }
@@ -243,7 +264,7 @@ $vsInstallPath = Get-VsInstallLocation
 if ($null -ne $vsInstallPath)
 {
     Import-Module "$vsInstallPath\Common7\Tools\Microsoft.VisualStudio.DevShell.dll"
-    Enter-VsDevShell -SkipAutomaticLocation -InstallPath $vsinstallpath | Out-Null
+    Enter-VsDevShell -SkipAutomaticLocation -InstallPath $vsinstallpath *> $null
 }
 
 $PSReadLineOptions = @{
@@ -361,8 +382,7 @@ if (Get-Command "dotnet-suggest" -errorAction SilentlyContinue)
     }    
 } else
 {
-    "Unable to provide System.CommandLine tab completion support unless the [dotnet-suggest] tool is first installed."
-    "See the following for tool installation: https://www.nuget.org/packages/dotnet-suggest"
+    Write-Verbose "dotnet-suggest not found; System.CommandLine tab completion is unavailable. Install: https://www.nuget.org/packages/dotnet-suggest"
 }
 
 $env:DOTNET_SUGGEST_SCRIPT_VERSION = "1.0.2"
