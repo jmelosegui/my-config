@@ -6,6 +6,10 @@
 #   winget show <id> --versions
 # Removing the `version:` line reverts that package to "install if not present"
 # (latest at first install, no auto-upgrade thereafter).
+#
+# If a package is already installed at a version newer than the one pinned here,
+# setup warns and leaves it alone instead of downgrading it. Bump the pin to the
+# installed version to keep tracking it.
 
 properties:
   configurationVersion: 0.2.0
@@ -27,7 +31,7 @@ properties:
         allowPrerelease: true
       settings:
         id: ZedIndustries.Zed
-        version: "1.14.2"
+        version: "1.19.2"
         source: winget
         Ensure: Present
     - resource: Microsoft.WinGet.DSC/WinGetPackage
