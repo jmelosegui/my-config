@@ -13,13 +13,29 @@ vim.keymap.set("n", "<leader>bn", ":bnext<CR>", { desc = "Goto Next Buffer", sil
 vim.keymap.set("n", "<Tab>", "<cmd>tabnext<CR>", { desc = "Goto Next Tab", silent = true })
 vim.keymap.set("n", "<S-Tab>", "<cmd>tabprevious<CR>", { desc = "Goto Previous Tab", silent = true })
 
--- Terminal: open a full-width terminal in the lower split, ready to type
-vim.keymap.set(
-	"n",
-	"<leader>t",
-	"<cmd>botright split | resize 12 | term<CR>i",
-	{ desc = "Open terminal in a bottom split", silent = true }
-)
+-- Terminal: toggle a full-width terminal in the lower split. Hiding keeps the
+-- shell alive, so the next toggle brings the same session back.
+local term_height = 12
+local function toggle_terminal()
+	for _, win in ipairs(vim.api.nvim_list_wins()) do
+		if vim.bo[vim.api.nvim_win_get_buf(win)].buftype == "terminal" then
+			term_height = vim.api.nvim_win_get_height(win)
+			vim.api.nvim_win_hide(win)
+			return
+		end
+	end
+	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+		if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].buftype == "terminal" then
+			vim.cmd("botright split | resize " .. term_height .. " | buffer " .. buf)
+			vim.cmd("startinsert")
+			return
+		end
+	end
+	vim.cmd("botright split | resize " .. term_height .. " | term")
+	vim.cmd("startinsert")
+end
+vim.keymap.set("n", "<leader>t", toggle_terminal, { desc = "Toggle bottom terminal", silent = true })
+vim.keymap.set("t", "<C-t>", toggle_terminal, { desc = "Hide bottom terminal", silent = true })
 -- Exit terminal-mode back to normal mode
 vim.keymap.set("t", "<C-\\><C-\\>", "<C-\\><C-n>", { desc = "Exit terminal mode", silent = true })
 

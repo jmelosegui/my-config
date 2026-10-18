@@ -48,6 +48,37 @@ vim.opt.splitright = true
 -- The shell* options below are the Neovim-recommended settings that make
 -- :make/:! redirection and UTF-8 output behave correctly under PowerShell.
 if vim.fn.has("win32") == 1 then
+    -- If nvim was started from a stripped environment (e.g. a VS dev shell),
+    -- child shells such as :terminal inherit a PATH missing the Machine/User
+    -- entries. Append whatever the registry has that is not already present.
+    local function registry_path(hive)
+        local key = hive == "machine"
+            and [[HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment]]
+            or [[HKCU\Environment]]
+        local reg = (vim.env.SystemRoot or [[C:\Windows]]) .. [[\System32\reg.exe]]
+        local out = vim.fn.system({ reg, "query", key, "/v", "Path" })
+        local value = out:match("REG_EXPAND_SZ%s+([^\r\n]+)") or out:match("REG_SZ%s+([^\r\n]+)")
+        if not value then return {} end
+        value = value:gsub("%%([^%%]+)%%", function(name) return vim.env[name] or ("%" .. name .. "%") end)
+        return vim.split(value, ";", { trimempty = true })
+    end
+
+    local seen, parts = {}, {}
+    for _, p in ipairs(vim.split(vim.env.PATH or "", ";", { trimempty = true })) do
+        seen[p:lower():gsub("\\+$", "")] = true
+        parts[#parts + 1] = p
+    end
+    for _, hive in ipairs({ "machine", "user" }) do
+        for _, p in ipairs(registry_path(hive)) do
+            local k = p:lower():gsub("\\+$", "")
+            if not seen[k] then
+                seen[k] = true
+                parts[#parts + 1] = p
+            end
+        end
+    end
+    vim.env.PATH = table.concat(parts, ";")
+
     local powershell_options = {
         shell = vim.fn.executable("pwsh") == 1 and "pwsh" or "powershell",
         shellcmdflag =
