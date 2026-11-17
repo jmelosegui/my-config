@@ -83,6 +83,7 @@ function New-Symlinks {
         - Existing files are backed up with timestamps before being replaced
         - The powershell-yaml module is automatically installed if not present
         - Environment variables in paths are automatically expanded
+        - $Documents resolves to the user's actual Documents folder (honors OneDrive redirection)
         - Symbolic links work for both files and directories
         - Target source files/directories must exist for symbolic links to function properly
     #>
@@ -103,10 +104,14 @@ function New-Symlinks {
     
     $mapping = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Yaml -Ordered 
 
+    # Resolve the real Documents folder; it may be redirected (e.g. OneDrive Known Folder Move),
+    # so %USERPROFILE%\Documents is not reliable.
+    $documents = [Environment]::GetFolderPath('MyDocuments')
+
     foreach ($map in $mapping.symbolicLinks) {
-        # Expand environment variables and script root variables
-        $destination = [Environment]::ExpandEnvironmentVariables($map.destination.Replace('$PSScriptRoot', $RepositoryRoot))
-        $source = [Environment]::ExpandEnvironmentVariables($map.source.Replace('$PSScriptRoot', $RepositoryRoot))
+        # Expand environment variables, script root and Documents tokens
+        $destination = [Environment]::ExpandEnvironmentVariables($map.destination.Replace('$PSScriptRoot', $RepositoryRoot).Replace('$Documents', $documents))
+        $source = [Environment]::ExpandEnvironmentVariables($map.source.Replace('$PSScriptRoot', $RepositoryRoot).Replace('$Documents', $documents))
 
         # Create the parent directory of the link if it doesn't already exist
         $destParent = Split-Path $destination -Parent
